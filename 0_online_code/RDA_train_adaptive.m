@@ -31,7 +31,9 @@ param.NumStims = 4;
 param.repeat = 10;
 param.prep_factor = [1:3];
 
-logger(param.SubName);
+logpath = pwd;
+logpath = strrep(logpath,'\','/');
+logger(param.SubName,'',logpath);
 Folder = ['Dat_',param.SubName];
 mkdir(Folder);
 
@@ -101,7 +103,7 @@ while ~finish
                     if lastBlock ~= -1 && datahdr.block > lastBlock + 1
                         disp(['******* Overflow with ' int2str(datahdr.block - lastBlock) ' blocks ******']);
                         
-                        logger('Overflow');
+                        logger('Overflow','',logpath);
                     end
                     lastBlock = datahdr.block;
                     
@@ -136,7 +138,7 @@ while ~finish
                         param.switch_on                 = true;
                         param.Numtrial                  = param.Numtrial + 1;
                         disp(['Trial:',num2str(param.Numtrial)])
-                        logger(['Trial:',num2str(param.Numtrial)],'train');
+                        logger(['Trial:',num2str(param.Numtrial)],'train',logpath);
                     end
                     
                     
@@ -172,7 +174,7 @@ while ~finish
                                     save([Folder,'/param'],'param'); % save parameter
                                     save([Folder,'/', param.SubName,'_Training'],'sig','trig'); % save data
                                     
-                                    logger('Train end, Data saved','train');
+                                    logger('Train end, Data saved','train',logpath);
                                     param.Numtrial = 0; % reset block number
                                     socket_sender(adip,port,6);
                                     return

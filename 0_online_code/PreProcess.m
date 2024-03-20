@@ -125,7 +125,7 @@ if ismember(3, param.prep_factor) % 3: ASR
 %                 cal_sig = cal_sig(ch_here,:); % follow param setting
 %             end
 %             param = preASR(cal_sig,param);
-        ref = clean_windows_MJ(sig(:,1:5*param.Fs*60),param.Fs);
+        ref = clean_windows_MJ(sig,param.Fs);
         param.state = asr_calibrate(ref,param.Fs,param.cutoff);
         
         end

@@ -20,22 +20,24 @@ if stat > 0
 end
 
 % %%%%%%%%%%%%%% Only Testing%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+prompt = {'IP address:','Port number:','Subject number:'};
+dlgtitle = 'Input';
+fieldsize = [1 45; 1 45; 1 45];
+definput = {'127.0.0.1','1668','Sub01'};
+answer = inputdlg(prompt,dlgtitle,fieldsize,definput);
 
-adip = input('IP address is: ','s');
-port = input('Port # is: ');
+adip = answer{1};
+port = str2double(answer{2});
+SubName = answer{3};
 
-param.SubName = input('Subjet: ','s');
+[file,path] = uigetfile({'*.mat'});
 
+load([path,file]);
 
-load(['./Dat_',param.SubName,'/param.mat'])
 param.calibrate=true;
-
 param.device = 3; % (All:0/Doorlock:1/AirConditioner:2/Lamp:3/Bluetoothspeaker:4) ');
-
 socket_sender(adip, port, param.device+200);
-
 param.Numtrial = 0;
-Folder = ['Dat_',param.SubName];
 
 % param.H                         = figure(1);
 % set(param.H, 'color', 'w','position',[2000, 50, 900, 500]);
@@ -52,15 +54,19 @@ Folder = ['Dat_',param.SubName];
 %     param.h(i,4)                        = plot(nan,nan, 'parent',param.SH(i));
 % 
 % end
-
-
 %     set(gcf, 'Position', [200, 50, 1800, 1000])
 % set(gcf,'PaperUnits','inches','PaperPosition',[0 0 16 10]);
 
 param.trD.mode = 'testing';
 
-param.path = pwd; % Current directory
-param.dir = [param.path,'\',Folder]; % directory where data saved
+param.dir =path; % directory where data saved
+files = split(path,'\');
+logpath =  cell2mat(join(files(1:end-2),'/'));
+
+% -- parameters for adaptation
+param.trD.threshold = 0.1;
+param.trD.adaptmode = 'margin';
+param.DSP.lambda = 0.1;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -106,7 +112,7 @@ while ~finish
                     if lastBlock ~= -1 && datahdr.block > lastBlock + 1
                         disp(['******* Overflow with ' int2str(datahdr.block - lastBlock) ' blocks ******']);
                         
-                        logger('Overflow');
+                        logger('Overflow','',logpath);
                     end
                     lastBlock = datahdr.block;
                     
@@ -142,7 +148,7 @@ while ~finish
                         param.switch_on                 = true;
                         param.Numtrial                  = param.Numtrial + 1;
                         disp(['Trial:',num2str(param.Numtrial)])
-                        logger(['Trial:',num2str(param.Numtrial)],'test');
+                        logger(['Trial:',num2str(param.Numtrial)],'test',logpath);
                     end
                     
                     %-- check if one block end
@@ -162,13 +168,13 @@ while ~finish
                             case 'testing'
                                 [C, param] = P300_processing_adaptive(sig_vec(1:param.NumChIni,:),trigger_re,param);
 
-                                save([Folder,'/', param.SubName,'_Testing',num2str(param.Numtrial)],'sig_vec','trigger','trigger_re');
+                                save([param.dir,'/', param.SubName,'_Testing',num2str(param.Numtrial)],'sig_vec','trigger','trigger_re');
                                
                                 socket_sender(adip,port,C); % send result to controller
                                 
                                 fprintf('Selected : %d \n',C);
                                 param.prediction(param.Numtrial) = C;
-                                logger(['Predicted: ',num2str(C)],'test')
+                                logger(['Predicted: ',num2str(C)],'test',logpath);
                                 shareVar.value = C;
 
                                 %-- for camera control
@@ -178,9 +184,8 @@ while ~finish
                                     closeCamera();
                                 end
                                 
-                                print([Folder,'/', param.SubName,'_Testing',num2str(param.Numtrial)],'-dpng','-r0')
                                 
-                                save([Folder,'/param'],'param'); % save parameter
+                                save([param.dir,'/param'],'param'); % save parameter
                                 
                                 data1s = [];
                                 trig = [];
@@ -189,7 +194,7 @@ while ~finish
                     end
                     
                 case 3       % Stop message
-                    save([Folder,'/param'],'param'); % save parameter
+                    save([param.dir,'/param'],'param'); % save parameter
                     
                     disp('Stop');
                     data = pnet(con, 'read', hdr.size - header_size);

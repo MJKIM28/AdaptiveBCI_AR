@@ -1,4 +1,5 @@
 function[hitLabel,param]= Classification_new(Feature,label,param)
+global gamma
 gamma = param.trD.gamma;
 %         gamma = 1/(size(Feature,2)*var(Feature(:)));
 [sc] = predict_mj(param.trD, Feature);

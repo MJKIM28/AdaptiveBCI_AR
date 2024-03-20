@@ -2,7 +2,7 @@ function [C, param]   = P300_processing_adaptive(sig, trig, param)
 global DS
 % updated @ 20240311
 
-try
+% try
     if isfield(param.trD, 'mdl')
         param.trD.mode  = 'testing';
         fprintf('Testing start!..\n');
@@ -16,7 +16,7 @@ try
     EP = EpochData(sig,trig,param);
     [Feature, label, param] = FeatureExtraction(EP, param);
 
-    switch param.trD.mdl
+    switch param.trD.mode
         case 'training'
             %-- train classifier
             [C,param]               = Classification(Feature,label, param);
@@ -27,18 +27,19 @@ try
             output = getoutput(score); %SVM kernel
 
             %-- check update
-            [up,Posterior] = checkupdate(score, [] ,threshold,output);
+            [up,Posterior] = checkupdate(score, [] ,param.trD.threshold,output);
 
 
             %-- update
             %-- DSP
             if up
-                EP_1block = Epoch_condition(EP,paramL);
+                EP_1block = Epoch_condition(EP,param);
                 param  = updateDSP(EP_1block,output,param);
                 %-- apply updated DSP to feat
                 Feat = FeatureExt_DSP(EP_1block,param);
                 %-- SVM
                 param = updateClassifier(Feat,output,param);
+                fprintf('>> Updated\n')
             end
 
             % FOR Dynamic Stopping
@@ -53,6 +54,6 @@ try
             end
     end
     % clearvars -except C param
-catch
-    keyboard
-end
+% catch
+%     keyboard
+% end
