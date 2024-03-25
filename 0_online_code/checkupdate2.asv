@@ -1,0 +1,33 @@
+function [up,Posterior] = checkupdate2(score,pdfs,threshold,output)
+% score: trial x stim
+
+[Ntrial,Nstim] = size(score);
+
+sort(score,2)
+
+Dist = [];
+for ii = 1:Nstim
+    Dist(ii) = mahal(mean(score(:,ii)),reshape(score(:,setdiff(1:Nstim,ii)),Ntrial*(Nstim-1),1));
+end
+[maxval,maxid] = max(Dist);
+if maxval> threshold && maxid == output
+    up = true;
+else
+    up = false;
+end
+Posterior = maxval;
+
+%% Z scored score
+% MM = mean(score(:));
+% STD = std(score(:));
+% % ZZ = (mean(score) - MM)/STD;
+% ZZ = (score - MM)/STD; % for averaged feature
+% [maxval,maxid] = max(ZZ);
+% if maxval> threshold && maxid == output
+%     up = true;
+% else
+%     up = false;
+% end
+% Posterior = maxval;
+
+end

@@ -64,9 +64,9 @@ files = split(path,'\');
 logpath =  cell2mat(join(files(1:end-2),'/'));
 
 % -- parameters for adaptation
-param.trD.threshold = 0.1;
+param.trD.threshold = 0.5;
 param.trD.adaptmode = 'margin';
-param.DSP.lambda = 0.1;
+param.DSP.lambda = 0.02;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -172,10 +172,10 @@ while ~finish
                                
                                 socket_sender(adip,port,C); % send result to controller
                                 
-                                fprintf('Selected : %d \n',C);
+                                fprintf('\n>>Selected : %d \n',C);
                                 param.prediction(param.Numtrial) = C;
                                 logger(['Predicted: ',num2str(C)],'test',logpath);
-                                shareVar.value = C;
+%                                 shareVar.value = C;
 
                                 %-- for camera control
                                 if param.device == 1 && C == 3

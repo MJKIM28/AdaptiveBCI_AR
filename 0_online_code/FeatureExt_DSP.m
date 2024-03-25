@@ -1,6 +1,5 @@
 function [Feature,labels, param] = FeatureExt_DSP(EP, param)
-param.winsize = 5;
-window = param.Baseline + 1:param.winsize:param.Epocline;
+window = param.Baseline + 1:param.winsize:param.Baseline+param.Epocline;
 % Nt = size(EP.lat,3);
 
 

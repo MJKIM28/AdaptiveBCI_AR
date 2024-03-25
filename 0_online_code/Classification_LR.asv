@@ -1,26 +1,19 @@
-function [hitLabel,param]= Classification(Feature,label,param)
-global gamma
+function [hitLabel,param]= Classification_LR(Feature,label,param)
 if strcmp(param.trD.mode,'training')
     try
-        gamma = 1/(size(Feature,2)*var(Feature(:)));
-        
-        param.trD.mdl = fitcsvm(Feature, label);%,'KernelFunction','mysigmoid');
-        param.trD.mdl = fitPosterior(param.trD.mdl);
-        
-        param.trD.gamma = gamma;
-        
-        param.trD.mode      = 'testing';
-        
-        
-        [~,score] = predict(param.trD.mdl,Feature);
+  
+%         param.trD.mdl = fitclinear(Feature,label,"Learner","logistic",'Regularization','lasso');
+       
+        if min(label) < 0
+            label(label==-1)=0;
+        end
+        param.trD.mdl = fitglm(Feature,label,"Distribution","binomial",'Link','logit');
+        [B,FitInfo] =lassoglm(Feature,label,"binomial", 'CV', 10);
+        idxLambdaMinDeviance = FitInfo.IndexMinDeviance;
+        B0 = FitInfo.Intercept(idxLambdaMinDeviance); % Intercept
+        coefficients = B(:, idxLambdaMinDeviance); % Optimal coefficients
+        coef = [B0; B(:,idxLambdaMinDeviance)];
 
-        
-        param.trD.SV = param.trD.mdl.X(param.trD.mdl.IsSupportVector,:);
-        param.trD.Y_SV = label(param.trD.mdl.IsSupportVector,:);
-        param.trD.score_SV = score(param.trD.mdl.IsSupportVector,:);
-        param.trD.Alpha = param.trD.mdl.Alpha;
-        param.trD.Bias = param.trD.mdl.Bias;
-        param.trD.score = score;
 
         hitLabel = [];
         
@@ -30,16 +23,29 @@ if strcmp(param.trD.mode,'training')
             fprintf('%d',r)
             trind = Cvind ~=r ;
             feat = Feature(trind,:);
-            gamma = 1/(size(feat,2)*var(feat(:)));
-            mdl=  fitcsvm(feat,label(trind));%,'KernelFunction','mysigmoid');
+            mdl =  fitglm(feat,label(trind),"Distribution","binomial",'Link','logit');
+
+            [B,FitInfo] =lassoglm(feat,label(trind),"binomial", 'CV', 10);
+        idxLambdaMinDeviance = FitInfo.IndexMinDeviance;
+        B0 = FitInfo.Intercept(idxLambdaMinDeviance); % Intercept
+        coefficients = B(:, idxLambdaMinDeviance); % Optimal coefficients
+        coef = [B0; B(:,idxLambdaMinDeviance)];
+
+
             teind = Cvind == r;
-            [result, score] = predict(mdl,Feature(teind,:));
+            [result,ci] = predict(mdl,Feature(teind,:));
+
+            yhat = glmval(coef,Feature(teind,:),'logit');
+            yhatBinom = (yhat>=0.5);
+
             acc(r) = length(find(result == label(teind)))/length(result);
         end
         fprintf('\n');
         CVAcc = mean(acc(r));
         fprintf('CV accuracy: %.2f\n',CVAcc);
         param.CVAcc = CVAcc;
+
+        param.trD.mode = 'testing';
         
     catch
         fprintf('Training failed..!\n')
@@ -49,9 +55,7 @@ else
     try
         
         %         Feature = (Feature - repmat( param.trD.featparam(1), size(Feature,1),1))./repmat(param.trD.featparam(2), size(Feature,1),1);
-        gamma = param.trD.gamma;
-%         gamma = 1/(size(Feature,2)*var(Feature(:)));
-        [C,sc] = predict(param.trD.mdl, Feature);
+          [~,sc] = predict(param.trD.mdl, Feature);
         if isfield(param,'DSP') || isfield(param.DTP,'W')
             if isfield(param.DSP,'W') || isfield(param.DTP,'W')
                 

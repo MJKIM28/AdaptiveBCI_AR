@@ -22,24 +22,58 @@ global DS
             [C,param]               = Classification(Feature,label, param);
         case 'testing'
             %-- initial output
-            [C,param] = Classification_new(Feature,label,param); % use updated Classifier
+            [C,param] = Classification(Feature,label,param); % use updated Classifier
             score = param.trD.score;
             output = getoutput(score); %SVM kernel
 
             %-- check update
-            [up,Posterior] = checkupdate(score, [] ,param.trD.threshold,output);
-
+            [up,Posterior,D] = checkupdate(score, [] ,param.trD.threshold,output,[]);
+            param.update{param.Numtrial}.updated = up;
+            param.update{param.Numtrial}.Posterior = Posterior;
+            param.update{param.Numtrial}.Dist = D;
 
             %-- update
             %-- DSP
-            if up
+            if ~isempty(up)%%&& con ~= 1
                 EP_1block = Epoch_condition(EP,param);
-                param  = updateDSP(EP_1block,output,param);
+
+                %-- update DSP
+                if length(up) > 1
+                    EP_update = EP_1block;
+                    EP_update.nar = EP_update.nar(:,:,up,:);
+
+                else
+                    EP_update = EP_1block;
+                end
+
+                
+                param  = updateDSP(EP_update,output,param);
+                
                 %-- apply updated DSP to feat
-                Feat = FeatureExt_DSP(EP_1block,param);
-                %-- SVM
-                param = updateClassifier(Feat,output,param);
+
+                Repeat = param.repeat;
+                param.repeat = size(EP_update.nar,3);
+                Feat = FeatureExt_DSP(EP_update,param);
+                [C_new,param] = Classification(Feat,[],param);
+
+                label_temp = -ones(size(Feat,1),1);
+                label_temp = reshape(label_temp,param.repeat,param.NumStims);
+                label_temp(:,C_new) = 1;
+                label = label_temp(:);
+
+                %-- re-calibration
+                param.trD.feature = [param.trD.feature; Feat];
+                param.trD.label = [param.trD.label; label];
+
+                param.trD.mode = 'training';
+                [~,param] = Classification(param.trD.feature,param.trD.label,param);
+              
+                param.repeat = Repeat;
+
                 fprintf('>> Updated\n')
+
+                param.update{param.Numtrial}.DSP = param.DSP;
+                param.update{param.Numtrial}.mdl = param.trD;
             end
 
             % FOR Dynamic Stopping

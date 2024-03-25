@@ -1,8 +1,5 @@
 %% Experiment: Adaptive BCI in AR env
 % 2024.03
-
-% pre 1 session -> main 4 session -> post 2 session 
-
 % Minju Kim
 
 
@@ -117,7 +114,7 @@ sess = 1;
 set(h,'windowstate','minimized');
 for tr = 1:Ntr
     fprintf('\nSession%d Trial %d\n..',sess,tr)
-    fprintf('Stim start in %ds\n',3)
+    fprintf('Stim start in %ds\n',intervals(sess,tr))
     pause(3)
     target = targetlist(tr,sess);
     targetpresent(h,MW,axAll,stim_img,target); % 3 sec
@@ -145,8 +142,8 @@ for sess = 2:Nsess-2
 
     for tr = 1:Ntr
         fprintf('\nSession%d Trial %d\n..',sess,tr)
-        fprintf('Stim start in %ds\n',intervals(sess-1,tr))
-        pause(intervals(sess-1,tr))
+        fprintf('Stim start in %ds\n',intervals(tr))
+        pause(intervals(tr))
         target = targetlist(tr,sess);
         targetpresent(h,MW,axAll,stim_img,target); % 3 sec
 
@@ -173,7 +170,7 @@ for sess = Nsess-1:Nsess
     set(h,'windowstate','minimized');
     for tr = 1:Ntr
         fprintf('\nSession%d Trial %d\n..',sess,tr)
-        fprintf('Stim start in %ds\n',3)
+        fprintf('Stim start in %ds\n',intervals(tr))
         pause(3)
         target = targetlist(tr,sess);
         targetpresent(h,MW,axAll,stim_img,target); % 3 sec
@@ -195,5 +192,3 @@ vars.target = targetlist;
 vars.intervals = intervals;
 
 save(SubName,'vars')
-
-    instruction(Figs.h,MW,Figs.ax,'실험이 모두 종료되었습니다',10,54)
