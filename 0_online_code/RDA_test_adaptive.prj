@@ -88,7 +88,6 @@
       <file>${PROJECT_ROOT}\Calibration.m</file>
       <file>${PROJECT_ROOT}\checkupdate.m</file>
       <file>${PROJECT_ROOT}\Classification.m</file>
-      <file>${PROJECT_ROOT}\Classification_new.m</file>
       <file>${PROJECT_ROOT}\clean_windows_MJ.m</file>
       <file>${PROJECT_ROOT}\closeCamera.m</file>
       <file>${PROJECT_ROOT}\decidestopping.m</file>
@@ -114,17 +113,14 @@
       <file>${PROJECT_ROOT}\getpval.m</file>
       <file>${PROJECT_ROOT}\ICL_feature_extractor_MJ.m</file>
       <file>${PROJECT_ROOT}\logger.m</file>
-      <file>${PROJECT_ROOT}\mysigmoid.m</file>
       <file>${PROJECT_ROOT}\P300_processing_adaptive.m</file>
       <file>${PROJECT_ROOT}\pnet.m</file>
       <file>${PROJECT_ROOT}\pnet.mexw64</file>
       <file>${PROJECT_ROOT}\prebadchannelrejection.m</file>
-      <file>${PROJECT_ROOT}\predict_mj.m</file>
       <file>${PROJECT_ROOT}\PreProcess.m</file>
       <file>${PROJECT_ROOT}\run_ICL_MJ.m</file>
       <file>${PROJECT_ROOT}\runCamera.m</file>
       <file>${PROJECT_ROOT}\socket_sender.m</file>
-      <file>${PROJECT_ROOT}\updateClassifier.m</file>
       <file>${PROJECT_ROOT}\updateDSP.m</file>
       <file>${PROJECT_ROOT}\windows.m</file>
     </fileset.depfun>

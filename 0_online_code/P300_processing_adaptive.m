@@ -20,6 +20,8 @@ global DS
         case 'training'
             %-- train classifier
             [C,param]               = Classification(Feature,label, param);
+            param.trD.feature = Feature;
+            param.trD.label = label;
         case 'testing'
             %-- initial output
             [C,param] = Classification(Feature,label,param); % use updated Classifier
@@ -38,13 +40,9 @@ global DS
                 EP_1block = Epoch_condition(EP,param);
 
                 %-- update DSP
-                if length(up) > 1
                     EP_update = EP_1block;
                     EP_update.nar = EP_update.nar(:,:,up,:);
 
-                else
-                    EP_update = EP_1block;
-                end
 
                 
                 param  = updateDSP(EP_update,output,param);

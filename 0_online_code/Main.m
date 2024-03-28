@@ -10,9 +10,11 @@ clear all; close all; clc
 
 SubName = input('Subject (SubXX):','s');
 
-% 15 trials x 7 sessions (1 pre, 4 main, 2 post)
+% 15 trials x 6 or 7 sessions (1 pre, 4 main, 1 or 2 post)
 Ntr = 15;
-Nsess = 7;
+Npost = 1;
+Nsess = Npost + 5;
+
 
 cd('C:\Users\minju\Desktop\mjkim\adaptive_BCI\AdaptiveBCI_AR\0_online_code')
 %% Training
@@ -53,7 +55,10 @@ winsize = get(h,'Position');
 set(h,'WindowState','minimized')
 Figs.h = h;
 
-intervals = [10 5 7 15 12 14 5 10 9 11 13 5 12 10; 9 13 5 8 7 10 12 6 10 15 9 12 6 10; 15 5 9 13 10 14 6 10 12 11 7 10 13 7];
+intervals = [10 5 7 15 12 14 5 10 9 11 13 5 12 10 11; ...
+    9 13 5 8 7 10 12 6 10 15 9 12 6 10 12; ...
+    15 5 9 13 10 14 6 10 12 11 7 10 13 7 10;...
+    7 8 5 10 15 9 13 12 8 14 7 9 10 11 6 ];
 
 stims = [1 2 3 4];
 NSeq = Ntr*Nsess;
@@ -95,8 +100,6 @@ Figs.stim_img = stim_img;
 Figs.axAll = targetmake(Figs.h,winsize);
 Figs.ax = makeinstruction(Figs.h,winsize);
 
-MW = tcpclient('127.0.0.1',1800);
-fopen(MW);
 
 
 h = Figs.h;
@@ -107,10 +110,16 @@ stim_img = Figs.stim_img;
 
 %% Pre (Control) 
 fprintf('Ready for Pre session (without video)\n')
+fprintf('Run RDA_test_adaptive.exe and start stim without video\n')
+
 pause;
 
-ClickCommand();
+MW = tcpclient('127.0.0.1',1800);
+fopen(MW);
+
+
 instruction(Figs.h,MW,Figs.ax,'준비되면 스페이스바를 눌러주세요',3,54)
+ClickCommand(1300,950);
 pause;
 
 sess = 1;
@@ -131,14 +140,18 @@ for tr = 1:Ntr
     fprintf('\nTrial %d end\n',tr)
 end
 fprintf('Pre session end\n')
-
+clear MW
 %% Exp
 
 fprintf('Run RDA_test_adaptive.exe and start stim with video\n')
 pause;
-for sess = 2:Nsess-2
+
+MW = tcpclient('127.0.0.1',1800);
+fopen(MW);
+
+for sess = 2:Nsess-Npost
     
-    ClickCommand();
+    ClickCommand(1300,950);
     instruction(Figs.h,MW,Figs.ax,'준비되면 스페이스바를 눌러주세요',3,54)
     pause;
     set(h,'windowstate','minimized');
@@ -159,15 +172,16 @@ for sess = 2:Nsess-2
         fprintf('\nTrial %d end\n',tr)
     end
 end
-
+clear MW
 %% post (control)
 fprintf('Ready for Post session (without video)\n')
 pause;
 
-for sess = Nsess-1:Nsess
+MW = tcpclient('127.0.0.1',1800);
+fopen(MW);
+for sess = Nsess-Npost+1:Nsess
     
-    ClickCommand();
-
+    ClickCommand(1300,950);
     instruction(Figs.h,MW,Figs.ax,'준비되면 스페이스바를 눌러주세요',3,54)
     pause;
     set(h,'windowstate','minimized');
@@ -191,9 +205,30 @@ fprintf('Post session end\n')
 
 
 %%
+instruction(Figs.h,MW,Figs.ax,'실험이 모두 종료되었습니다',10,54)
+
+
 vars.target = targetlist;
 vars.intervals = intervals;
+vars.subname =SubName;
 
+load(['Dat_',SubName,'/param.mat']);
+close
+pred_pre =  param.prediction(end-Nsess*Ntr+1:end-(Nsess-1)*Ntr);
+pred_main = param.prediction(end-(Nsess-1)*Ntr+1:end-(Nsess-5)*Ntr);
+pred_post = param.prediction(end-(Nsess-5)*Ntr+1:end);
+
+vars.Acc_pre = mean(pred_pre' == targetlist(:,1));
+
+target_main =  targetlist(:,2:5);
+vars.Acc_mainAll = mean(pred_main'==target_main(:));
+
+target_post = targetlist(:,6:end);
+vars.Acc_post = mean(pred_post'==target_post(:));
+
+for s= 1:Nsess-1-Npost
+    vars.Acc_main_sess(s) = mean(pred_main(Ntr*(s-1)+1:s*Ntr)' == targetlist(:,1+s));
+end
+fprintf('==============\nAcc_pre  %.2f \n \nAcc_main1  %.2f \nAcc_main2  %.2f\nAcc_main3  %.2f\nAcc_main4  %.2f\nAcc_main(all) %.2f\n\nAcc_post %.2f\n',...
+    vars.Acc_pre,vars.Acc_main_sess(1),vars.Acc_main_sess(2),vars.Acc_main_sess(3),vars.Acc_main_sess(4),vars.Acc_mainAll,vars.Acc_post);
 save(SubName,'vars')
-
-    instruction(Figs.h,MW,Figs.ax,'실험이 모두 종료되었습니다',10,54)

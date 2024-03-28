@@ -1,7 +1,6 @@
 function [Feature,labels, param] = FeatureExt_DSP(EP, param)
-window = param.Baseline + 1:param.winsize:param.Baseline+param.Epocline;
 % Nt = size(EP.lat,3);
-
+window = param.DSP.window;
 
 if strcmp(param.trD.mode,'training')
     Nt = size(EP.tar,3);

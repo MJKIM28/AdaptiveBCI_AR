@@ -42,9 +42,12 @@ param.dir = [param.path,'\',Folder]; % directory where data saved
 
 param.caltime = input('Calibration data length[sec]: ') *param.Fs;
 
+param.winsize = 5;
 param.DSP.type = 'nf';
 param.DSP.nf = 5; % use 5 spatial filters
 param.DSP.theta = 0.1;
+param.DSP.window = param.Baseline + 1:param.winsize:param.Baseline+param.Epocline;
+
 mkdir('DB_log')
 
 %%
