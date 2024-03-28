@@ -36,9 +36,6 @@ pause;
 run('RDA_train_adaptive.m')
 
 %% Ready for Exp
-fprintf('Ready for main exp\n')
-
-pause;
 
 
 screens = get(0,'MonitorPositions');
@@ -141,8 +138,19 @@ for tr = 1:Ntr
 end
 fprintf('Pre session end\n')
 clear MW
-%% Exp
 
+try
+load(['Dat_',SubName,'/param.mat']);
+close
+pred_pre =  param.prediction(end-Ntr+1:end);
+vars.Acc_pre = mean(pred_pre' == targetlist(:,1));
+fprintf('==============\nAcc_pre  %.2f \n==============\n',vars.Acc_pre);
+catch
+    fprintf('!! Error in accuracy computation\n')
+end
+
+%% Exp
+fprintf('Ready for Main session (without video)\n')
 fprintf('Run RDA_test_adaptive.exe and start stim with video\n')
 pause;
 
@@ -173,8 +181,26 @@ for sess = 2:Nsess-Npost
     end
 end
 clear MW
+
+try
+load(['Dat_',SubName,'/param.mat']);
+close
+pred_main = param.prediction(end-(Nsess-2)*Ntr+1:end);
+target_main =  targetlist(:,2:5);
+vars.Acc_mainAll = mean(pred_main'==target_main(:));
+
+for s= 1:Nsess-1-Npost
+    vars.Acc_main_sess(s) = mean(pred_main(Ntr*(s-1)+1:s*Ntr)' == targetlist(:,1+s));
+end
+fprintf('==============\nAcc_main1  %.2f \nAcc_main2  %.2f\nAcc_main3  %.2f\nAcc_main4  %.2f\nAcc_main(all) %.2f\n====================\n',...
+    vars.Acc_main_sess(1),vars.Acc_main_sess(2),vars.Acc_main_sess(3),vars.Acc_main_sess(4),vars.Acc_mainAll);
+catch
+    fprintf('!! Error in accuracy computation\n')
+end
+
 %% post (control)
 fprintf('Ready for Post session (without video)\n')
+fprintf('Run RDA_test_adaptive.exe and start stim without video\n')
 pause;
 
 MW = tcpclient('127.0.0.1',1800);
@@ -203,15 +229,27 @@ for sess = Nsess-Npost+1:Nsess
 end
 fprintf('Post session end\n')
 
+try
+load(['Dat_',SubName,'/param.mat']);
+close
+pred_post = param.prediction(end-(Nsess-5)*Ntr+1:end);
+target_post = targetlist(:,6:end);
+vars.Acc_post = mean(pred_post'==target_post(:));
+fprintf('==============\nAcc_post %.2f\n',...
+    vars.Acc_post);
 
+catch
+    fprintf('!! Error in accuracy computation\n')
+end
 %%
 instruction(Figs.h,MW,Figs.ax,'실험이 모두 종료되었습니다',10,54)
 
 
 vars.target = targetlist;
 vars.intervals = intervals;
-vars.subname =SubName;
+vars.subname = SubName;
 
+%-- Accuracy
 load(['Dat_',SubName,'/param.mat']);
 close
 pred_pre =  param.prediction(end-Nsess*Ntr+1:end-(Nsess-1)*Ntr);
@@ -231,4 +269,6 @@ for s= 1:Nsess-1-Npost
 end
 fprintf('==============\nAcc_pre  %.2f \n \nAcc_main1  %.2f \nAcc_main2  %.2f\nAcc_main3  %.2f\nAcc_main4  %.2f\nAcc_main(all) %.2f\n\nAcc_post %.2f\n',...
     vars.Acc_pre,vars.Acc_main_sess(1),vars.Acc_main_sess(2),vars.Acc_main_sess(3),vars.Acc_main_sess(4),vars.Acc_mainAll,vars.Acc_post);
+
+%-- save variables
 save(SubName,'vars')

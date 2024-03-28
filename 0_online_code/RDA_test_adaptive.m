@@ -20,15 +20,16 @@ if stat > 0
 end
 
 % %%%%%%%%%%%%%% Only Testing%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-prompt = {'IP address:','Port number:','Subject number:'};
+prompt = {'IP address:','Port number:','Subject number:','Classifier mode:'};
 dlgtitle = 'Input';
-fieldsize = [1 45; 1 45; 1 45];
-definput = {'127.0.0.1','1668','Sub01'};
+fieldsize = [1 45; 1 45; 1 45; 1 45];
+definput = {'127.0.0.1','1668','Sub01','Adaptive'};
 answer = inputdlg(prompt,dlgtitle,fieldsize,definput);
 
 adip = answer{1};
 port = str2double(answer{2});
 SubName = answer{3};
+ADmode = answer{4};
 
 [file,path] = uigetfile({'*.mat'});
 
@@ -67,7 +68,7 @@ logpath =  cell2mat(join(files(1:end-2),'/'));
 param.trD.threshold = 0.5;
 param.trD.adaptmode = 'margin';
 param.DSP.lambda = 0.02;
-
+param.trD.ADmode = ADmode;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % shared('shareVar');

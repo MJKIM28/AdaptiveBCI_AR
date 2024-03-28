@@ -20,58 +20,74 @@ global DS
         case 'training'
             %-- train classifier
             [C,param]               = Classification(Feature,label, param);
+            param.trD.mdl_init = param.trD.mdl;
+            param.trD.mdl_adapt = param.trD.mdl;
             param.trD.feature = Feature;
             param.trD.label = label;
         case 'testing'
-            %-- initial output
+
+            if strcmp(param.trD.ADmode,'fixed')
+                param.trD.mdl = param.trD.mdl_init;
+            [C,param] = Classification(Feature,label,param); % use updated Classifier
+                     fprintf('>> Use fixed\n') 
+      
+
+            elseif strcmp(param.trD.ADmode,'adaptive')
+                param.trD.mdl = param.trD.mdl_adapt;
+                 %-- initial output
             [C,param] = Classification(Feature,label,param); % use updated Classifier
             score = param.trD.score;
             output = getoutput(score); %SVM kernel
 
-            %-- check update
-            [up,Posterior,D] = checkupdate(score, [] ,param.trD.threshold,output,[]);
-            param.update{param.Numtrial}.updated = up;
-            param.update{param.Numtrial}.Posterior = Posterior;
-            param.update{param.Numtrial}.Dist = D;
+            
+                %-- check update
+                [up,Posterior,D] = checkupdate(score, [] ,param.trD.threshold,output,[]);
+                param.update{param.Numtrial}.updated = up;
+                param.update{param.Numtrial}.Posterior = Posterior;
+                param.update{param.Numtrial}.Dist = D;
 
-            %-- update
-            %-- DSP
-            if ~isempty(up)%%&& con ~= 1
-                EP_1block = Epoch_condition(EP,param);
+                %-- update
+                %-- DSP
+                if ~isempty(up)
+                    EP_1block = Epoch_condition(EP,param);
 
-                %-- update DSP
+                    %-- update DSP
                     EP_update = EP_1block;
                     EP_update.nar = EP_update.nar(:,:,up,:);
 
+                    param  = updateDSP(EP_update,output,param);
 
-                
-                param  = updateDSP(EP_update,output,param);
-                
-                %-- apply updated DSP to feat
+                    %-- apply updated DSP to feat
 
-                Repeat = param.repeat;
-                param.repeat = size(EP_update.nar,3);
-                Feat = FeatureExt_DSP(EP_update,param);
-                [C_new,param] = Classification(Feat,[],param);
+                    Repeat = param.repeat;
+                    param.repeat = size(EP_update.nar,3);
+                    Feat = FeatureExt_DSP(EP_update,param);
+                    [C_new,param] = Classification(Feat,[],param);
 
-                label_temp = -ones(size(Feat,1),1);
-                label_temp = reshape(label_temp,param.repeat,param.NumStims);
-                label_temp(:,C_new) = 1;
-                label = label_temp(:);
+                    label_temp = -ones(size(Feat,1),1);
+                    label_temp = reshape(label_temp,param.repeat,param.NumStims);
+                    label_temp(:,C_new) = 1;
+                    label = label_temp(:);
 
-                %-- re-calibration
-                param.trD.feature = [param.trD.feature; Feat];
-                param.trD.label = [param.trD.label; label];
+                    %-- re-calibration
+                    param.trD.feature = [param.trD.feature; Feat];
+                    param.trD.label = [param.trD.label; label];
 
-                param.trD.mode = 'training';
-                [~,param] = Classification(param.trD.feature,param.trD.label,param);
-              
-                param.repeat = Repeat;
+                    param.trD.mode = 'training';
+                    [~,param] = Classification(param.trD.feature,param.trD.label,param);
 
-                fprintf('>> Updated\n')
+                    param.repeat = Repeat;
 
-                param.update{param.Numtrial}.DSP = param.DSP;
-                param.update{param.Numtrial}.mdl = param.trD;
+                    fprintf('>> Updated\n')
+
+
+                    param.update{param.Numtrial}.DSP = param.DSP;
+                    param.update{param.Numtrial}.mdl = param.trD;
+                    param.trD.mdl_adapt = param.trD.mdl;
+                else
+                    fprintf('>> Not updated\n')
+                end
+            
             end
 
             % FOR Dynamic Stopping
