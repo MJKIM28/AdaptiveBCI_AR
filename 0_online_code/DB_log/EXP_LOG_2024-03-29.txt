@@ -1,0 +1,409 @@
+
+[] 2024-03-29 18:23:41: test
+[train] 2024-03-29 18:24:10: Trial:1
+[train] 2024-03-29 18:24:24: Trial:2
+[train] 2024-03-29 18:24:40: Trial:3
+[train] 2024-03-29 18:24:54: Trial:4
+[train] 2024-03-29 18:25:00: Train end, Data saved
+[] 2024-03-29 18:27:02: Overflow
+[test] 2024-03-29 18:27:33: Trial:5
+[test] 2024-03-29 18:27:34: Predicted: 4
+[test] 2024-03-29 18:27:54: Trial:6
+[test] 2024-03-29 18:27:54: Predicted: 3
+[test] 2024-03-29 18:28:15: Trial:7
+[test] 2024-03-29 18:28:15: Predicted: 1
+[test] 2024-03-29 18:28:36: Trial:8
+[test] 2024-03-29 18:28:36: Predicted: 2
+[test] 2024-03-29 18:28:57: Trial:9
+[test] 2024-03-29 18:28:58: Predicted: 4
+[test] 2024-03-29 18:29:18: Trial:10
+[test] 2024-03-29 18:29:19: Predicted: 1
+[test] 2024-03-29 18:29:39: Trial:11
+[test] 2024-03-29 18:29:40: Predicted: 3
+[test] 2024-03-29 18:30:01: Trial:12
+[test] 2024-03-29 18:30:01: Predicted: 3
+[test] 2024-03-29 18:30:22: Trial:13
+[test] 2024-03-29 18:30:22: Predicted: 4
+[test] 2024-03-29 18:30:43: Trial:14
+[test] 2024-03-29 18:30:43: Predicted: 1
+[test] 2024-03-29 18:31:04: Trial:15
+[test] 2024-03-29 18:31:04: Predicted: 2
+[test] 2024-03-29 18:31:25: Trial:16
+[test] 2024-03-29 18:31:25: Predicted: 2
+[test] 2024-03-29 18:31:46: Trial:17
+[test] 2024-03-29 18:31:46: Predicted: 2
+[test] 2024-03-29 18:32:07: Trial:18
+[test] 2024-03-29 18:32:07: Predicted: 4
+[test] 2024-03-29 18:32:28: Trial:19
+[test] 2024-03-29 18:32:28: Predicted: 1
+[] 2024-03-29 18:36:24: Overflow
+[test] 2024-03-29 18:37:21: Trial:20
+[test] 2024-03-29 18:37:24: Predicted: 2
+[test] 2024-03-29 18:37:44: Trial:21
+[test] 2024-03-29 18:37:45: Predicted: 4
+[test] 2024-03-29 18:38:09: Trial:22
+[test] 2024-03-29 18:38:10: Predicted: 4
+[test] 2024-03-29 18:38:42: Trial:23
+[test] 2024-03-29 18:38:43: Predicted: 1
+[test] 2024-03-29 18:39:12: Trial:24
+[test] 2024-03-29 18:39:13: Predicted: 3
+[test] 2024-03-29 18:39:44: Trial:25
+[test] 2024-03-29 18:39:45: Predicted: 3
+[test] 2024-03-29 18:40:07: Trial:26
+[test] 2024-03-29 18:40:08: Predicted: 1
+[test] 2024-03-29 18:40:36: Trial:27
+[test] 2024-03-29 18:40:36: Predicted: 4
+[test] 2024-03-29 18:41:03: Trial:28
+[test] 2024-03-29 18:41:03: Predicted: 4
+[test] 2024-03-29 18:41:32: Trial:29
+[test] 2024-03-29 18:41:32: Predicted: 1
+[test] 2024-03-29 18:42:03: Trial:30
+[test] 2024-03-29 18:42:03: Predicted: 2
+[test] 2024-03-29 18:42:26: Trial:31
+[test] 2024-03-29 18:42:26: Predicted: 2
+[test] 2024-03-29 18:42:56: Trial:32
+[test] 2024-03-29 18:42:56: Predicted: 3
+[test] 2024-03-29 18:43:24: Trial:33
+[test] 2024-03-29 18:43:25: Predicted: 1
+[test] 2024-03-29 18:43:53: Trial:34
+[test] 2024-03-29 18:43:54: Predicted: 1
+[test] 2024-03-29 18:44:28: Trial:35
+[test] 2024-03-29 18:44:28: Predicted: 1
+[test] 2024-03-29 18:44:59: Trial:36
+[test] 2024-03-29 18:44:59: Predicted: 1
+[test] 2024-03-29 18:45:22: Trial:37
+[test] 2024-03-29 18:45:22: Predicted: 4
+[test] 2024-03-29 18:45:48: Trial:38
+[test] 2024-03-29 18:45:48: Predicted: 4
+[test] 2024-03-29 18:46:13: Trial:39
+[test] 2024-03-29 18:46:14: Predicted: 1
+[test] 2024-03-29 18:46:41: Trial:40
+[test] 2024-03-29 18:46:42: Predicted: 3
+[test] 2024-03-29 18:47:11: Trial:41
+[test] 2024-03-29 18:47:12: Predicted: 1
+[test] 2024-03-29 18:47:35: Trial:42
+[test] 2024-03-29 18:47:36: Predicted: 4
+[test] 2024-03-29 18:48:03: Trial:43
+[test] 2024-03-29 18:48:04: Predicted: 4
+[test] 2024-03-29 18:48:36: Trial:44
+[test] 2024-03-29 18:48:37: Predicted: 3
+[test] 2024-03-29 18:49:04: Trial:45
+[test] 2024-03-29 18:49:04: Predicted: 1
+[test] 2024-03-29 18:49:34: Trial:46
+[test] 2024-03-29 18:49:34: Predicted: 1
+[test] 2024-03-29 18:49:58: Trial:47
+[test] 2024-03-29 18:49:58: Predicted: 4
+[test] 2024-03-29 18:50:26: Trial:48
+[test] 2024-03-29 18:50:26: Predicted: 1
+[test] 2024-03-29 18:50:56: Trial:49
+[test] 2024-03-29 18:50:57: Predicted: 3
+[test] 2024-03-29 18:51:38: Trial:50
+[test] 2024-03-29 18:51:39: Predicted: 4
+[test] 2024-03-29 18:52:01: Trial:51
+[test] 2024-03-29 18:52:01: Predicted: 1
+[test] 2024-03-29 18:52:28: Trial:52
+[test] 2024-03-29 18:52:29: Predicted: 4
+[test] 2024-03-29 18:52:59: Trial:53
+[test] 2024-03-29 18:53:00: Predicted: 3
+[test] 2024-03-29 18:53:27: Trial:54
+[test] 2024-03-29 18:53:28: Predicted: 1
+[test] 2024-03-29 18:53:59: Trial:55
+[test] 2024-03-29 18:54:00: Predicted: 3
+[test] 2024-03-29 18:54:23: Trial:56
+[test] 2024-03-29 18:54:24: Predicted: 3
+[test] 2024-03-29 18:54:51: Trial:57
+[test] 2024-03-29 18:54:52: Predicted: 3
+[test] 2024-03-29 18:55:21: Trial:58
+[test] 2024-03-29 18:55:22: Predicted: 3
+[test] 2024-03-29 18:55:51: Trial:59
+[test] 2024-03-29 18:55:51: Predicted: 3
+[test] 2024-03-29 18:56:16: Trial:60
+[test] 2024-03-29 18:56:16: Predicted: 2
+[test] 2024-03-29 18:56:44: Trial:61
+[test] 2024-03-29 18:56:44: Predicted: 3
+[test] 2024-03-29 18:57:15: Trial:62
+[test] 2024-03-29 18:57:16: Predicted: 4
+[test] 2024-03-29 18:57:40: Trial:63
+[test] 2024-03-29 18:57:41: Predicted: 3
+[test] 2024-03-29 18:58:08: Trial:64
+[test] 2024-03-29 18:58:09: Predicted: 1
+[test] 2024-03-29 18:58:39: Trial:65
+[test] 2024-03-29 18:58:40: Predicted: 4
+[test] 2024-03-29 18:59:05: Trial:66
+[test] 2024-03-29 18:59:06: Predicted: 1
+[test] 2024-03-29 18:59:28: Trial:67
+[test] 2024-03-29 18:59:29: Predicted: 2
+[test] 2024-03-29 18:59:56: Trial:68
+[test] 2024-03-29 18:59:57: Predicted: 1
+[test] 2024-03-29 19:00:29: Trial:69
+[test] 2024-03-29 19:00:30: Predicted: 3
+[test] 2024-03-29 19:00:56: Trial:70
+[test] 2024-03-29 19:00:57: Predicted: 3
+[test] 2024-03-29 19:01:28: Trial:71
+[test] 2024-03-29 19:01:28: Predicted: 4
+[test] 2024-03-29 19:01:58: Trial:72
+[test] 2024-03-29 19:01:58: Predicted: 3
+[] 2024-03-29 19:42:31: Subtest04
+[] 2024-03-29 19:45:22: Subtest04
+[train] 2024-03-29 19:46:47: Trial:1
+[train] 2024-03-29 19:47:02: Trial:2
+[train] 2024-03-29 19:47:17: Trial:3
+[train] 2024-03-29 19:47:32: Trial:4
+[train] 2024-03-29 19:47:46: Trial:5
+[train] 2024-03-29 19:48:01: Trial:6
+[train] 2024-03-29 19:48:16: Trial:7
+[train] 2024-03-29 19:48:31: Trial:8
+[train] 2024-03-29 19:48:40: Train end, Data saved
+[test] 2024-03-29 19:49:54: Trial:1
+[test] 2024-03-29 19:49:54: Predicted: 3
+[test] 2024-03-29 19:50:11: Trial:2
+[test] 2024-03-29 19:50:11: Predicted: 2
+[test] 2024-03-29 19:50:30: Trial:3
+[test] 2024-03-29 19:50:30: Predicted: 2
+[test] 2024-03-29 19:50:51: Trial:4
+[test] 2024-03-29 19:50:52: Predicted: 3
+[test] 2024-03-29 19:51:13: Trial:5
+[test] 2024-03-29 19:51:13: Predicted: 2
+[test] 2024-03-29 19:51:34: Trial:6
+[test] 2024-03-29 19:51:34: Predicted: 4
+[test] 2024-03-29 19:51:55: Trial:7
+[test] 2024-03-29 19:51:55: Predicted: 4
+[test] 2024-03-29 19:52:16: Trial:8
+[test] 2024-03-29 19:52:16: Predicted: 1
+[test] 2024-03-29 19:52:37: Trial:9
+[test] 2024-03-29 19:52:37: Predicted: 3
+[test] 2024-03-29 19:52:58: Trial:10
+[test] 2024-03-29 19:52:58: Predicted: 1
+[test] 2024-03-29 19:53:19: Trial:11
+[test] 2024-03-29 19:53:19: Predicted: 2
+[test] 2024-03-29 19:53:40: Trial:12
+[test] 2024-03-29 19:53:40: Predicted: 1
+[test] 2024-03-29 19:54:01: Trial:13
+[test] 2024-03-29 19:54:01: Predicted: 4
+[test] 2024-03-29 19:54:22: Trial:14
+[test] 2024-03-29 19:54:22: Predicted: 3
+[test] 2024-03-29 19:54:43: Trial:15
+[test] 2024-03-29 19:54:43: Predicted: 4
+[test] 2024-03-29 19:57:04: Trial:16
+[test] 2024-03-29 19:57:07: Predicted: 3
+[test] 2024-03-29 19:57:28: Trial:17
+[test] 2024-03-29 19:57:28: Predicted: 2
+[test] 2024-03-29 19:57:53: Trial:18
+[test] 2024-03-29 19:57:53: Predicted: 4
+[test] 2024-03-29 19:58:26: Trial:19
+[test] 2024-03-29 19:58:26: Predicted: 3
+[test] 2024-03-29 19:58:56: Trial:20
+[test] 2024-03-29 19:58:56: Predicted: 4
+[test] 2024-03-29 19:59:28: Trial:21
+[test] 2024-03-29 19:59:28: Predicted: 1
+[test] 2024-03-29 19:59:51: Trial:22
+[test] 2024-03-29 19:59:51: Predicted: 2
+[test] 2024-03-29 20:00:19: Trial:23
+[test] 2024-03-29 20:00:20: Predicted: 1
+[test] 2024-03-29 20:00:46: Trial:24
+[test] 2024-03-29 20:00:47: Predicted: 3
+[test] 2024-03-29 20:01:15: Trial:25
+[test] 2024-03-29 20:01:16: Predicted: 2
+[test] 2024-03-29 20:01:46: Trial:26
+[test] 2024-03-29 20:01:47: Predicted: 3
+[test] 2024-03-29 20:02:09: Trial:27
+[test] 2024-03-29 20:02:10: Predicted: 4
+[test] 2024-03-29 20:02:40: Trial:28
+[test] 2024-03-29 20:02:40: Predicted: 1
+[test] 2024-03-29 20:03:08: Trial:29
+[test] 2024-03-29 20:03:08: Predicted: 3
+[test] 2024-03-29 20:03:37: Trial:30
+[test] 2024-03-29 20:03:37: Predicted: 2
+[test] 2024-03-29 20:04:08: Trial:31
+[test] 2024-03-29 20:04:08: Predicted: 4
+[test] 2024-03-29 20:04:39: Trial:32
+[test] 2024-03-29 20:04:39: Predicted: 2
+[test] 2024-03-29 20:05:02: Trial:33
+[test] 2024-03-29 20:05:02: Predicted: 3
+[test] 2024-03-29 20:05:28: Trial:34
+[test] 2024-03-29 20:05:28: Predicted: 3
+[test] 2024-03-29 20:05:53: Trial:35
+[test] 2024-03-29 20:05:54: Predicted: 2
+[test] 2024-03-29 20:06:21: Trial:36
+[test] 2024-03-29 20:06:22: Predicted: 4
+[test] 2024-03-29 20:06:51: Trial:37
+[test] 2024-03-29 20:06:52: Predicted: 3
+[test] 2024-03-29 20:07:15: Trial:38
+[test] 2024-03-29 20:07:16: Predicted: 1
+[test] 2024-03-29 20:07:43: Trial:39
+[test] 2024-03-29 20:07:44: Predicted: 4
+[test] 2024-03-29 20:08:16: Trial:40
+[test] 2024-03-29 20:08:17: Predicted: 4
+[test] 2024-03-29 20:08:43: Trial:41
+[test] 2024-03-29 20:08:44: Predicted: 3
+[test] 2024-03-29 20:09:14: Trial:42
+[test] 2024-03-29 20:09:14: Predicted: 2
+[test] 2024-03-29 20:09:38: Trial:43
+[test] 2024-03-29 20:09:38: Predicted: 4
+[test] 2024-03-29 20:10:06: Trial:44
+[test] 2024-03-29 20:10:06: Predicted: 3
+[test] 2024-03-29 20:10:36: Trial:45
+[test] 2024-03-29 20:10:36: Predicted: 1
+[test] 2024-03-29 20:11:12: Trial:46
+[test] 2024-03-29 20:11:13: Predicted: 3
+[test] 2024-03-29 20:11:35: Trial:47
+[test] 2024-03-29 20:11:36: Predicted: 1
+[test] 2024-03-29 20:12:02: Trial:48
+[test] 2024-03-29 20:12:03: Predicted: 3
+[test] 2024-03-29 20:12:33: Trial:49
+[test] 2024-03-29 20:12:34: Predicted: 3
+[test] 2024-03-29 20:13:01: Trial:50
+[test] 2024-03-29 20:13:02: Predicted: 4
+[test] 2024-03-29 20:13:33: Trial:51
+[test] 2024-03-29 20:13:34: Predicted: 4
+[test] 2024-03-29 20:13:58: Trial:52
+[test] 2024-03-29 20:13:58: Predicted: 4
+[test] 2024-03-29 20:14:26: Trial:53
+[test] 2024-03-29 20:14:26: Predicted: 2
+[test] 2024-03-29 20:14:56: Trial:54
+[test] 2024-03-29 20:14:56: Predicted: 4
+[test] 2024-03-29 20:15:25: Trial:55
+[test] 2024-03-29 20:15:26: Predicted: 2
+[test] 2024-03-29 20:15:50: Trial:56
+[test] 2024-03-29 20:15:51: Predicted: 3
+[test] 2024-03-29 20:16:18: Trial:57
+[test] 2024-03-29 20:16:19: Predicted: 4
+[test] 2024-03-29 20:16:49: Trial:58
+[test] 2024-03-29 20:16:50: Predicted: 3
+[test] 2024-03-29 20:17:14: Trial:59
+[test] 2024-03-29 20:17:15: Predicted: 1
+[test] 2024-03-29 20:17:42: Trial:60
+[test] 2024-03-29 20:17:43: Predicted: 3
+[test] 2024-03-29 20:18:11: Trial:61
+[test] 2024-03-29 20:18:11: Predicted: 4
+[test] 2024-03-29 20:18:37: Trial:62
+[test] 2024-03-29 20:18:38: Predicted: 1
+[test] 2024-03-29 20:19:00: Trial:63
+[test] 2024-03-29 20:19:01: Predicted: 4
+[test] 2024-03-29 20:19:28: Trial:64
+[test] 2024-03-29 20:19:29: Predicted: 3
+[test] 2024-03-29 20:20:01: Trial:65
+[test] 2024-03-29 20:20:02: Predicted: 2
+[test] 2024-03-29 20:20:28: Trial:66
+[test] 2024-03-29 20:20:29: Predicted: 2
+[test] 2024-03-29 20:20:59: Trial:67
+[test] 2024-03-29 20:21:00: Predicted: 1
+[test] 2024-03-29 20:21:29: Trial:68
+[test] 2024-03-29 20:21:30: Predicted: 1
+[test] 2024-03-29 20:21:55: Trial:69
+[test] 2024-03-29 20:21:56: Predicted: 3
+[test] 2024-03-29 20:22:27: Trial:70
+[test] 2024-03-29 20:22:28: Predicted: 1
+[test] 2024-03-29 20:22:52: Trial:71
+[test] 2024-03-29 20:22:53: Predicted: 4
+[test] 2024-03-29 20:23:19: Trial:72
+[test] 2024-03-29 20:23:20: Predicted: 2
+[test] 2024-03-29 20:23:47: Trial:73
+[test] 2024-03-29 20:23:49: Predicted: 1
+[test] 2024-03-29 20:24:17: Trial:74
+[test] 2024-03-29 20:24:18: Predicted: 2
+[test] 2024-03-29 20:24:41: Trial:75
+[test] 2024-03-29 20:24:42: Predicted: 1
+[test] 2024-03-29 20:28:16: Trial:76
+[test] 2024-03-29 20:28:18: Predicted: 4
+[test] 2024-03-29 20:28:37: Trial:77
+[test] 2024-03-29 20:28:38: Predicted: 1
+[test] 2024-03-29 20:28:58: Trial:78
+[test] 2024-03-29 20:28:59: Predicted: 2
+[test] 2024-03-29 20:29:19: Trial:79
+[test] 2024-03-29 20:29:20: Predicted: 3
+[test] 2024-03-29 20:29:40: Trial:80
+[test] 2024-03-29 20:29:41: Predicted: 2
+[test] 2024-03-29 20:30:01: Trial:81
+[test] 2024-03-29 20:30:02: Predicted: 1
+[test] 2024-03-29 20:30:22: Trial:82
+[test] 2024-03-29 20:30:23: Predicted: 4
+[test] 2024-03-29 20:30:44: Trial:83
+[test] 2024-03-29 20:30:44: Predicted: 4
+[test] 2024-03-29 20:31:05: Trial:84
+[test] 2024-03-29 20:31:06: Predicted: 2
+[test] 2024-03-29 20:31:26: Trial:85
+[test] 2024-03-29 20:31:27: Predicted: 4
+[test] 2024-03-29 20:31:47: Trial:86
+[test] 2024-03-29 20:31:48: Predicted: 1
+[test] 2024-03-29 20:32:08: Trial:87
+[test] 2024-03-29 20:32:09: Predicted: 4
+[test] 2024-03-29 20:32:29: Trial:88
+[test] 2024-03-29 20:32:30: Predicted: 2
+[test] 2024-03-29 20:32:50: Trial:89
+[test] 2024-03-29 20:32:51: Predicted: 1
+[test] 2024-03-29 20:33:11: Trial:90
+[test] 2024-03-29 20:33:12: Predicted: 2
+[] 2024-03-29 21:21:24: test
+[train] 2024-03-29 21:22:17: Trial:1
+[train] 2024-03-29 21:22:32: Trial:2
+[train] 2024-03-29 21:22:47: Trial:3
+[train] 2024-03-29 21:23:02: Trial:4
+[train] 2024-03-29 21:23:05: Train end, Data saved
+[] 2024-03-29 21:28:06: test
+[] 2024-03-29 21:29:13: test
+[train] 2024-03-29 21:29:44: Trial:1
+[train] 2024-03-29 21:29:59: Trial:2
+[train] 2024-03-29 21:30:14: Trial:3
+[train] 2024-03-29 21:30:28: Trial:4
+[train] 2024-03-29 21:30:31: Train end, Data saved
+[test] 2024-03-29 21:31:35: Trial:1
+[test] 2024-03-29 21:31:36: Predicted: 4
+[test] 2024-03-29 21:31:57: Trial:2
+[test] 2024-03-29 21:31:57: Predicted: 3
+[test] 2024-03-29 21:32:18: Trial:3
+[test] 2024-03-29 21:32:18: Predicted: 1
+[test] 2024-03-29 21:32:39: Trial:4
+[test] 2024-03-29 21:32:39: Predicted: 1
+[test] 2024-03-29 21:33:00: Trial:5
+[test] 2024-03-29 21:33:00: Predicted: 3
+[test] 2024-03-29 21:34:49: Trial:6
+[test] 2024-03-29 21:34:50: Predicted: 1
+[test] 2024-03-29 21:35:13: Trial:7
+[test] 2024-03-29 21:35:13: Predicted: 2
+[test] 2024-03-29 21:35:38: Trial:8
+[test] 2024-03-29 21:35:38: Predicted: 3
+[test] 2024-03-29 21:36:11: Trial:9
+[test] 2024-03-29 21:36:11: Predicted: 2
+[test] 2024-03-29 21:36:41: Trial:10
+[test] 2024-03-29 21:36:41: Predicted: 3
+[test] 2024-03-29 21:37:12: Trial:11
+[test] 2024-03-29 21:37:13: Predicted: 2
+[test] 2024-03-29 21:37:43: Trial:12
+[test] 2024-03-29 21:37:44: Predicted: 3
+[test] 2024-03-29 21:38:06: Trial:13
+[test] 2024-03-29 21:38:07: Predicted: 2
+[test] 2024-03-29 21:38:33: Trial:14
+[test] 2024-03-29 21:38:33: Predicted: 4
+[test] 2024-03-29 21:38:58: Trial:15
+[test] 2024-03-29 21:38:58: Predicted: 1
+[test] 2024-03-29 21:39:35: Trial:16
+[test] 2024-03-29 21:39:36: Predicted: 1
+[test] 2024-03-29 21:39:58: Trial:17
+[test] 2024-03-29 21:39:59: Predicted: 1
+[test] 2024-03-29 21:40:25: Trial:18
+[test] 2024-03-29 21:40:26: Predicted: 4
+[test] 2024-03-29 21:40:57: Trial:19
+[test] 2024-03-29 21:40:57: Predicted: 1
+[test] 2024-03-29 21:41:25: Trial:20
+[test] 2024-03-29 21:41:25: Predicted: 2
+[test] 2024-03-29 21:41:53: Trial:21
+[test] 2024-03-29 21:41:53: Predicted: 3
+[test] 2024-03-29 21:42:19: Trial:22
+[test] 2024-03-29 21:42:19: Predicted: 1
+[test] 2024-03-29 21:42:42: Trial:23
+[test] 2024-03-29 21:42:42: Predicted: 1
+[test] 2024-03-29 21:43:10: Trial:24
+[test] 2024-03-29 21:43:11: Predicted: 2
+[test] 2024-03-29 21:43:43: Trial:25
+[test] 2024-03-29 21:43:44: Predicted: 3
+[test] 2024-03-29 21:45:58: Trial:26
+[test] 2024-03-29 21:45:59: Predicted: 1
+[test] 2024-03-29 21:46:19: Trial:27
+[test] 2024-03-29 21:46:19: Predicted: 2
+[test] 2024-03-29 21:46:40: Trial:28
+[test] 2024-03-29 21:46:40: Predicted: 3
+[test] 2024-03-29 21:47:01: Trial:29
+[test] 2024-03-29 21:47:01: Predicted: 4
+[test] 2024-03-29 21:47:22: Trial:30
+[test] 2024-03-29 21:47:22: Predicted: 1

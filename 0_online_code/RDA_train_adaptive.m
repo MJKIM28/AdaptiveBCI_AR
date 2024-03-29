@@ -174,11 +174,13 @@ while ~finish
                                    
                                     disp('Training is completed!')
                                     param.trD.mode  = 'testing'; % change mode to test
+                                    param.Numtrial = 0; % reset block number
+
                                     save([Folder,'/param'],'param'); % save parameter
                                     save([Folder,'/', param.SubName,'_Training'],'sig','trig'); % save data
                                     
                                     logger('Train end, Data saved','train',logpath);
-                                    param.Numtrial = 0; % reset block number
+                                                                      
                                     socket_sender(adip,port,6);
                                     return
                                 end

@@ -98,13 +98,6 @@ Figs.axAll = targetmake(Figs.h,winsize);
 Figs.ax = makeinstruction(Figs.h,winsize);
 
 
-
-h = Figs.h;
-axAll = Figs.axAll;
-ax = Figs.ax;
-stim_img = Figs.stim_img;
-
-
 %% Pre (Control) 
 fprintf('Ready for Pre session (without video)\n')
 fprintf('Run RDA_test_adaptive.exe and start stim without video\n')
@@ -120,17 +113,17 @@ ClickCommand(1300,950);
 pause;
 
 sess = 1;
-set(h,'windowstate','minimized');
+set(Figs.h,'windowstate','minimized');
 for tr = 1:Ntr
     fprintf('\nSession%d Trial %d\n..',sess,tr)
     fprintf('Stim start in %ds\n',3)
     pause(3)
     target = targetlist(tr,sess);
-    targetpresent(h,MW,axAll,stim_img,target); % 3 sec
+    targetpresent(Figs.h,MW,Figs.axAll,Figs.stim_img,target); % 3 sec
 
     %-- start BCI
     STARTBCI
-    set(h,'windowstate','minimized');
+    set(Figs.h,'windowstate','minimized');
     fwrite(MW,'57'); % trigger: start BCI
     fprintf('> BCI start\n')
     pause(15);
@@ -141,7 +134,7 @@ clear MW
 
 try
 load(['Dat_',SubName,'/param.mat']);
-close
+
 pred_pre =  param.prediction(end-Ntr+1:end);
 vars.Acc_pre = mean(pred_pre' == targetlist(:,1));
 fprintf('==============\nAcc_pre  %.2f \n==============\n',vars.Acc_pre);
@@ -150,7 +143,7 @@ catch
 end
 
 %% Exp
-fprintf('Ready for Main session (without video)\n')
+fprintf('Ready for Main session (with video)\n')
 fprintf('Run RDA_test_adaptive.exe and start stim with video\n')
 pause;
 
@@ -162,18 +155,18 @@ for sess = 2:Nsess-Npost
     ClickCommand(1300,950);
     instruction(Figs.h,MW,Figs.ax,'준비되면 스페이스바를 눌러주세요',3,54)
     pause;
-    set(h,'windowstate','minimized');
+    set(Figs.h,'windowstate','minimized');
 
     for tr = 1:Ntr
         fprintf('\nSession%d Trial %d\n..',sess,tr)
         fprintf('Stim start in %ds\n',intervals(sess-1,tr))
         pause(intervals(sess-1,tr))
         target = targetlist(tr,sess);
-        targetpresent(h,MW,axAll,stim_img,target); % 3 sec
+        targetpresent(Figs.h,MW,Figs.axAll,Figs.stim_img,target); % 3 sec
 
         %-- start BCI
         STARTBCI
-        set(h,'windowstate','minimized');
+        set(Figs.h,'windowstate','minimized');
         fwrite(MW,'57'); % trigger: start BCI
         fprintf('> BCI start\n')
         pause(15);
@@ -184,7 +177,7 @@ clear MW
 
 try
 load(['Dat_',SubName,'/param.mat']);
-close
+
 pred_main = param.prediction(end-(Nsess-2)*Ntr+1:end);
 target_main =  targetlist(:,2:5);
 vars.Acc_mainAll = mean(pred_main'==target_main(:));
@@ -210,17 +203,17 @@ for sess = Nsess-Npost+1:Nsess
     ClickCommand(1300,950);
     instruction(Figs.h,MW,Figs.ax,'준비되면 스페이스바를 눌러주세요',3,54)
     pause;
-    set(h,'windowstate','minimized');
+    set(Figs.h,'windowstate','minimized');
     for tr = 1:Ntr
         fprintf('\nSession%d Trial %d\n..',sess,tr)
         fprintf('Stim start in %ds\n',3)
         pause(3)
         target = targetlist(tr,sess);
-        targetpresent(h,MW,axAll,stim_img,target); % 3 sec
+        targetpresent(Figs.h,MW,Figs.axAll,Figs.stim_img,target); % 3 sec
 
         %-- start BCI
         STARTBCI
-        set(h,'windowstate','minimized');
+        set(Figs.h,'windowstate','minimized');
         fwrite(MW,'57'); % trigger: start BCI
         fprintf('> BCI start\n')
         pause(15);
@@ -231,7 +224,7 @@ fprintf('Post session end\n')
 
 try
 load(['Dat_',SubName,'/param.mat']);
-close
+
 pred_post = param.prediction(end-(Nsess-5)*Ntr+1:end);
 target_post = targetlist(:,6:end);
 vars.Acc_post = mean(pred_post'==target_post(:));
