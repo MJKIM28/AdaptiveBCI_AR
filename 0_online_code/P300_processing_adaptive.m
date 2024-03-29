@@ -24,6 +24,8 @@ global DS
             param.trD.mdl_adapt = param.trD.mdl;
             param.trD.feature = Feature;
             param.trD.label = label;
+
+            param.DSP.init = param.DSP;
         case 'testing'
 
             if strcmp(param.trD.ADmode,'fixed')

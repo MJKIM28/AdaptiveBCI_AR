@@ -38,7 +38,6 @@ load([path,file]);
 param.calibrate=true;
 param.device = 3; % (All:0/Doorlock:1/AirConditioner:2/Lamp:3/Bluetoothspeaker:4) ');
 socket_sender(adip, port, param.device+200);
-param.Numtrial = 0;
 
 % param.H                         = figure(1);
 % set(param.H, 'color', 'w','position',[2000, 50, 900, 500]);

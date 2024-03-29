@@ -64,7 +64,6 @@ end
 w0 = -W_new'*(tarnarratio*mu_new(:,:,1)+(1-tarnarratio)*mu_new(:,:,2))';
 
 fprintf('DSP weight updated\n')
-param.DSP.old = param.DSP;
 param.DSP.W = W_new;
 param.DSP.Sw = Sw_new;
 param.DSP.Sb = Sb_new;
