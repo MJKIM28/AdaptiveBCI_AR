@@ -13,7 +13,7 @@ SubName = input('Subject (SubXX):','s');
 % 15 trials x 6 or 7 sessions (1 pre, 4 main, 1 or 2 post)
 Ntr = 15;
 Npost = 1;
-Nsess = Npost + 5;
+Nsess = Npost + 6;
 
 
 cd('C:\Users\minju\Desktop\mjkim\adaptive_BCI\AdaptiveBCI_AR\0_online_code')
@@ -55,7 +55,8 @@ Figs.h = h;
 intervals = [10 5 7 15 12 14 5 10 9 11 13 5 12 10 11; ...
     9 13 5 8 7 10 12 6 10 15 9 12 6 10 12; ...
     15 5 9 13 10 14 6 10 12 11 7 10 13 7 10;...
-    7 8 5 10 15 9 13 12 8 14 7 9 10 11 6 ];
+    7 8 5 10 15 9 13 12 8 14 7 9 10 11 6;
+    9 13 10 14 8 15 12 7 11 14 13 10 14 ];
 
 stims = [1 2 3 4];
 NSeq = Ntr*Nsess;
@@ -96,13 +97,6 @@ Figs.stim_img = stim_img;
 
 Figs.axAll = targetmake(Figs.h,winsize);
 Figs.ax = makeinstruction(Figs.h,winsize);
-
-
-
-h = Figs.h;
-axAll = Figs.axAll;
-ax = Figs.ax;
-stim_img = Figs.stim_img;
 
 
 %% Pre (Control) 
@@ -150,7 +144,7 @@ catch
 end
 
 %% Exp
-fprintf('Ready for Main session (without video)\n')
+fprintf('Ready for Main session (with video)\n')
 fprintf('Run RDA_test_adaptive.exe and start stim with video\n')
 pause;
 
@@ -162,18 +156,18 @@ for sess = 2:Nsess-Npost
     ClickCommand(1300,950);
     instruction(Figs.h,MW,Figs.ax,'준비되면 스페이스바를 눌러주세요',3,54)
     pause;
-    set(h,'windowstate','minimized');
+    set(Figs.h,'windowstate','minimized');
 
     for tr = 1:Ntr
         fprintf('\nSession%d Trial %d\n..',sess,tr)
         fprintf('Stim start in %ds\n',intervals(sess-1,tr))
         pause(intervals(sess-1,tr))
         target = targetlist(tr,sess);
-        targetpresent(Figs.h,MW,axAll,stim_img,target); % 3 sec
+        targetpresent(Figs.h,MW,Figs.axAll,Figs.stim_img,target); % 3 sec
 
         %-- start BCI
         STARTBCI
-        set(h,'windowstate','minimized');
+        set(Figs.h,'windowstate','minimized');
         fwrite(MW,'57'); % trigger: start BCI
         fprintf('> BCI start\n')
         pause(15);
@@ -210,17 +204,17 @@ for sess = Nsess-Npost+1:Nsess
     ClickCommand(1300,950);
     instruction(Figs.h,MW,Figs.ax,'준비되면 스페이스바를 눌러주세요',3,54)
     pause;
-    set(h,'windowstate','minimized');
+    set(Figs.h,'windowstate','minimized');
     for tr = 1:Ntr
         fprintf('\nSession%d Trial %d\n..',sess,tr)
         fprintf('Stim start in %ds\n',3)
         pause(3)
         target = targetlist(tr,sess);
-        targetpresent(Figs.h,MW,axAll,stim_img,target); % 3 sec
+        targetpresent(Figs.h,MW,Figs.axAll,Figs.stim_img,target); % 3 sec
 
         %-- start BCI
         STARTBCI
-        set(h,'windowstate','minimized');
+        set(Figs.h,'windowstate','minimized');
         fwrite(MW,'57'); % trigger: start BCI
         fprintf('> BCI start\n')
         pause(15);

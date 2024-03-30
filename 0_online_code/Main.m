@@ -10,10 +10,10 @@ clear all; close all; clc
 
 SubName = input('Subject (SubXX):','s');
 
-% 15 trials x 6 or 7 sessions (1 pre, 4 main, 1 or 2 post)
+% 15 trials x 6 or 7 sessions (1 pre, 5 main, 1 or 2 post)
 Ntr = 15;
 Npost = 1;
-Nsess = Npost + 5;
+Nsess = Npost + 6;
 
 
 cd('C:\Users\minju\Desktop\mjkim\adaptive_BCI\AdaptiveBCI_AR\0_online_code')
@@ -55,7 +55,8 @@ Figs.h = h;
 intervals = [10 5 7 15 12 14 5 10 9 11 13 5 12 10 11; ...
     9 13 5 8 7 10 12 6 10 15 9 12 6 10 12; ...
     15 5 9 13 10 14 6 10 12 11 7 10 13 7 10;...
-    7 8 5 10 15 9 13 12 8 14 7 9 10 11 6 ];
+    7 8 5 10 15 9 13 12 8 14 7 9 10 11 6;
+    9 13 10 14 8 15 12 7 11 14 13 10 14 15 6];
 
 stims = [1 2 3 4];
 NSeq = Ntr*Nsess;
@@ -133,6 +134,7 @@ fprintf('Pre session end\n')
 clear MW
 
 try
+    pause;
 load(['Dat_',SubName,'/param.mat']);
 
 pred_pre =  param.prediction(end-Ntr+1:end);
@@ -169,13 +171,14 @@ for sess = 2:Nsess-Npost
         set(Figs.h,'windowstate','minimized');
         fwrite(MW,'57'); % trigger: start BCI
         fprintf('> BCI start\n')
-        pause(15);
+        pause(17);
         fprintf('\nTrial %d end\n',tr)
     end
 end
 clear MW
 
 try
+    pause;
 load(['Dat_',SubName,'/param.mat']);
 
 pred_main = param.prediction(end-(Nsess-2)*Ntr+1:end);
