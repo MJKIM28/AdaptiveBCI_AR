@@ -38,9 +38,9 @@ for ii = 1:Nstim
 end
 [maxval,maxid] = max(Dist);
 if maxval> threshold && maxid == output
-    up = true;
+    up_check = true;
 else
-    up = false;
+    up_check = false;
 end
 % Posterior = maxval;
 
@@ -60,7 +60,7 @@ end
 %% ratio
 
 % elseif strcmp(type,'ratio')
-
+if up_check
 [Sorted,idx] = sort(score,2,"descend");
 
 trs = find(idx(:,1) == output); % max score == prediction
@@ -69,5 +69,9 @@ Posterior = 1 - Sorted(:,2)./Sorted(:,1);
 upids = Posterior(trs) > threshold;
 up = trs(upids);
 % end
-
+else
+    up = [];
+    Posterior = 0;
+    Dist = 0;
+end
 end

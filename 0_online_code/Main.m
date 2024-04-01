@@ -19,7 +19,7 @@ Nsess = Npost + 6;
 cd('C:\Users\minju\Desktop\mjkim\adaptive_BCI\AdaptiveBCI_AR\0_online_code')
 %% Training
 fprintf('Start Recording\n');
-pause;
+pause;    
 
 fprintf('\nRun middleware (QtHue_v1.exe)\n');
 fprintf('Hue address:192.168.1.231\n')
@@ -171,7 +171,7 @@ for sess = 2:Nsess-Npost
         set(Figs.h,'windowstate','minimized');
         fwrite(MW,'57'); % trigger: start BCI
         fprintf('> BCI start\n')
-        pause(17);
+        pause(18);
         fprintf('\nTrial %d end\n',tr)
     end
 end
@@ -182,7 +182,7 @@ try
 load(['Dat_',SubName,'/param.mat']);
 
 pred_main = param.prediction(end-(Nsess-2)*Ntr+1:end);
-target_main =  targetlist(:,2:5);
+target_main =  targetlist(:,2:6);
 vars.Acc_mainAll = mean(pred_main'==target_main(:));
 
 for s= 1:Nsess-1-Npost
@@ -209,7 +209,7 @@ for sess = Nsess-Npost+1:Nsess
     set(Figs.h,'windowstate','minimized');
     for tr = 1:Ntr
         fprintf('\nSession%d Trial %d\n..',sess,tr)
-        fprintf('Stim start in %ds\n',3)
+        fprintf('Stim start in %ds\n',5)
         pause(3)
         target = targetlist(tr,sess);
         targetpresent(Figs.h,MW,Figs.axAll,Figs.stim_img,target); % 3 sec
@@ -219,7 +219,7 @@ for sess = Nsess-Npost+1:Nsess
         set(Figs.h,'windowstate','minimized');
         fwrite(MW,'57'); % trigger: start BCI
         fprintf('> BCI start\n')
-        pause(15);
+        pause(18);
         fprintf('\nTrial %d end\n',tr)
     end
 end
@@ -228,8 +228,8 @@ fprintf('Post session end\n')
 try
 load(['Dat_',SubName,'/param.mat']);
 
-pred_post = param.prediction(end-(Nsess-5)*Ntr+1:end);
-target_post = targetlist(:,6:end);
+pred_post = param.prediction(end-(Nsess-6)*Ntr+1:end);
+target_post = targetlist(:,7:end);
 vars.Acc_post = mean(pred_post'==target_post(:));
 fprintf('==============\nAcc_post %.2f\n',...
     vars.Acc_post);
@@ -249,15 +249,15 @@ vars.subname = SubName;
 load(['Dat_',SubName,'/param.mat']);
 close
 pred_pre =  param.prediction(end-Nsess*Ntr+1:end-(Nsess-1)*Ntr);
-pred_main = param.prediction(end-(Nsess-1)*Ntr+1:end-(Nsess-5)*Ntr);
-pred_post = param.prediction(end-(Nsess-5)*Ntr+1:end);
+pred_main = param.prediction(end-(Nsess-1)*Ntr+1:end-(Nsess-6)*Ntr);
+pred_post = param.prediction(end-(Nsess-6)*Ntr+1:end);
 
 vars.Acc_pre = mean(pred_pre' == targetlist(:,1));
 
-target_main =  targetlist(:,2:5);
+target_main =  targetlist(:,2:6);
 vars.Acc_mainAll = mean(pred_main'==target_main(:));
 
-target_post = targetlist(:,6:end);
+target_post = targetlist(:,7:end);
 vars.Acc_post = mean(pred_post'==target_post(:));
 
 for s= 1:Nsess-1-Npost
