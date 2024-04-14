@@ -16,7 +16,7 @@ Npost = 1;
 Nsess = Npost + 6;
 
 
-cd('C:\Users\minju\Desktop\mjkim\adaptive_BCI\AdaptiveBCI_AR\0_online_code')
+% cd('C:\Users\minju\Desktop\mjkim\adaptive_BCI\AdaptiveBCI_AR\0_online_code')
 %% Training
 fprintf('Start Recording\n');
 pause;    
@@ -99,6 +99,24 @@ Figs.axAll = targetmake(Figs.h,winsize);
 Figs.ax = makeinstruction(Figs.h,winsize);
 
 
+%-- NASA TLX
+loadtypes = {'정신적 난이도 (Mental Demand)';'시간적 난이도 (Temporal Demand)';'신체적 난이도 (Physical Demand)';...
+    '성취감 (Performance)';'노력 수준 (Effort)';'좌절감 (Frustration)'};
+descriptions = {['작업 수행시 정신적/인지적 활동이 요구된 정도. 작업이 쉬웠나요, 어려웠나요? 단순했나요, 복잡했나요?',...
+    newline,'How much mental and perceptual activity was required? Was the task easy or demanding, simple or complex?'];...
+    ['작업 수행시 느낀 시간적 압박감의 정도',...
+    newline,'How much time pressure did you feel due to the pace at which the tasks or task elements occurred? Was the pace slow or rapid?'];...
+    ['작업 수행시 신체적 활동이 요구된 정도. 신체적으로 힘이 덜 들었나요, 많이 들었나요?',...
+    newline, 'How much physical activity was required? Was the task easy or demanding, slack or strenuous?'];...
+    ['작업을 수행하는 것이 성공적이었다고 느낀 정도',...
+    newline, 'How successful were you in performing the task? How satisfied were you with your performance?'];...
+    ['목표 달성을 위해 정신적, 신체적으로 노력한 정도',...
+    newline,'How hard did you have to work (mentally and physically) to accomplish your level of performance?'];...
+    ['작업 수행 중 짜증나고, 화가 나고, 스트레스를 받은 정도',...
+    newline,'How irritated, stressed, and annoyed versus content, relaxed, and complacent did you feel during the task?']};
+
+
+
 %% Pre (Control) 
 fprintf('Ready for Pre session (without video)\n')
 fprintf('Run RDA_test_adaptive.exe and start stim without video\n')
@@ -174,6 +192,10 @@ for sess = 2:Nsess-Npost
         pause(18);
         fprintf('\nTrial %d end\n',tr)
     end
+
+    %-- NASA TLX 
+    response_rating = nasatlx_ratings(h,loadtypes,descriptions);
+
 end
 clear MW
 
