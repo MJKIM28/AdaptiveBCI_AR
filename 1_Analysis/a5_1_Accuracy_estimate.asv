@@ -227,9 +227,8 @@ for s = setdiff(1:Nsub,5)
 
 end
 %%
-Acc_fix_all = []; Acc_ad_all = [];
+
 for s = setdiff(1:Nsub,5)
-        SubName = SubNameList{s};
     load([fpath,'\Simulate_reestDSP_Acc\',SubName])
     nsess = size(Acc_fixed,2);
  Acc_fix_all(s,1:nsess) = Acc_fixed;

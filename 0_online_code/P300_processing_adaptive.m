@@ -43,14 +43,18 @@ global DS
 
             
                 %-- check update
-                [up,Posterior,D] = checkupdate(score, [] ,param.trD.threshold,output,[]);
-                param.update{param.Numtrial}.updated = up;
+                [upcheck,up,Posterior,trs,D] = checkupdate(score, [] ,param.trD.threshold,output,[]);
+                if upcheck
+                    param.update{param.Numtrial}.updated = up;
+                else
+                    param.update{param.Numtrial}.updated = 0;
+                end
                 param.update{param.Numtrial}.Posterior = Posterior;
                 param.update{param.Numtrial}.Dist = D;
 
                 %-- update
                 %-- DSP
-                if ~isempty(up)
+                if upcheck
                     EP_1block = Epoch_condition(EP,param);
 
                     %-- update DSP

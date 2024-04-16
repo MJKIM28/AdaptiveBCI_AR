@@ -1,4 +1,4 @@
-function [up,Posterior,Dist] = checkupdate(score,pdfs,threshold,output,type)
+function [up_check,upids,Posterior,trs,Dist] = checkupdate(score,pdfs,threshold,output,type)
 % score: trial x stim
 [Ntrial,Nstim] = size(score);
 
@@ -60,18 +60,14 @@ end
 %% ratio
 
 % elseif strcmp(type,'ratio')
-if up_check
+
 [Sorted,idx] = sort(score,2,"descend");
 
 trs = find(idx(:,1) == output); % max score == prediction
 Posterior = 1 - Sorted(:,2)./Sorted(:,1);
 
-upids = Posterior(trs) > threshold;
-up = trs(upids);
+ids = Posterior(trs) > threshold;
+upids = trs(ids);
 % end
-else
-    up = [];
-    Posterior = 0;
-    Dist = 0;
-end
+
 end
