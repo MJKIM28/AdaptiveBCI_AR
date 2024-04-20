@@ -118,6 +118,7 @@ for s = 2:Nsub
 
     Block.target = targets;
     Block.badch = param.badch;
+    Epoch{1}.badch = param.badch;
     if LPF15 == 1
         save([fpath,'\Test\Block_15HZLPF\',SubName],'Block');
         save([fpath,'\Test\Epoch_15HZLPF\',SubName],'Epoch');

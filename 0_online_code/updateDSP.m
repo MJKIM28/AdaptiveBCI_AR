@@ -8,7 +8,7 @@ W_old = param.DSP.W;
 N_old = param.DSP.N;
 
 
-window = param.Baseline + 1:param.winsize:param.Baseline+param.Epocline;
+window = param.DSP.window;
 
 
 erptar = EP_1block.nar(window,:,:,output_init);

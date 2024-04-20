@@ -14,7 +14,7 @@ Ntr_con = 15;
 Nsess = 6;
 Ntr_te = Ntr_con*Nsess;
 
-
+LAMBDA = 0.02;
 %%
 for s = setdiff(1:Nsub,5)
     SubName = SubNameList{s};
@@ -24,7 +24,7 @@ for s = setdiff(1:Nsub,5)
     targetlist(targetlist == 0) = NaN;
 
     trials = find(~isnan(targetlist(:)));
-    targets = targetlist;
+    targets = targetlist(:);
 
     %% load accuracy
 %     p = load([fpath,'\Dat_',SubName,'\param.mat']);
@@ -58,7 +58,7 @@ for s = setdiff(1:Nsub,5)
 
  close all
 %% parameters
-
+rng(1)
 
     e = load([fpath,'\Train\Epoch\',SubName]);
     p = load([fpath,'\Dat_',SubName,'\param.mat']);
@@ -122,8 +122,10 @@ for s = setdiff(1:Nsub,5)
     pred_ad = [];
     param_ad = param_in;
     X = X_init;
+    UPmodel(1).DSP_init = param_in.DSP;
+    UPmodel(1).mdl_init = param_in.trD.mdl;
     for tr = Ntr_con+1:N_te
-    
+    rng(1)
     %-- use saved model
 %         paramNew = p.param;
 %         if tr > 1
@@ -137,7 +139,7 @@ for s = setdiff(1:Nsub,5)
 %         end
 
 %-- re-train
-
+param_ad.DSP.lambda = LAMBDA;
         param_ad.trD.mode = 'testing';
         param_ad.trD.mdl = param_ad.trD.mdl_adapt;
         [Feature, label, param_ad] = FeatureExtraction(et.Epoch{tr}, param_ad);
@@ -146,12 +148,14 @@ for s = setdiff(1:Nsub,5)
       [upcheck,up,Posterior,trs,D] = checkupdate(param_ad.trD.score, [] ,param_ad.trD.threshold,C,[]);
 
 
+      UPmodel(tt).classprob = param_ad.trD.score;
       UPmodel(tt).upcheck = upcheck;
       UPmodel(tt).upids = up;
       UPmodel(tt).Posterior = Posterior;
       UPmodel(tt).trials_candidate = trs;
       UPmodel(tt).Dist = D;
-
+      UPmodel(tt).target = targets(tr);
+      UPmodel(tt).prediction = C;
 
       if upcheck && ~isempty(up)
           EP_1block = Epoch_condition(et.Epoch{tr},param_ad);
@@ -161,7 +165,7 @@ for s = setdiff(1:Nsub,5)
           EP_update.nar = EP_update.nar(:,:,up,:);
 
           %-- update DSP
-%           param_ad  = updateDSP(EP_update,C,param_ad);
+          param_ad  = updateDSP(EP_update,C,param_ad);
 
           %-- apply updated DSP to feat
 
@@ -169,31 +173,32 @@ for s = setdiff(1:Nsub,5)
           param_ad.repeat = size(EP_update.nar,3);
           Feat = FeatureExt_DSP(EP_update,param_ad);
           [C_new,param_ad] = Classification(Feat,[],param_ad);
-% 
-%           label_temp = -ones(size(Feat,1),1);
-%           label_temp = reshape(label_temp,param_ad.repeat,param_ad.NumStims);
-%           label_temp(:,C_new) = 1;
-%           label = label_temp(:);
-% 
-%           %-- re-calibration
-%           param_ad.trD.feature = [param_ad.trD.feature; Feat];
-%           param_ad.trD.label = [param_ad.trD.label; label];
-%           [~,param_ad] = Classification(param_ad.trD.feature,param_ad.trD.label,param_ad);
+ 
+          label_temp = -ones(size(Feat,1),1);
+          label_temp = reshape(label_temp,param_ad.repeat,param_ad.NumStims);
+          label_temp(:,C_new) = 1;
+          label = label_temp(:);
 
-%           param_ad.repeat = Repeat;
+          %-- re-calibration
+          param_ad.trD.mode = 'training';
+          param_ad.trD.feature = [param_ad.trD.feature; Feat];
+          param_ad.trD.label = [param_ad.trD.label; label];
+          [~,param_ad] = Classification(param_ad.trD.feature,param_ad.trD.label,param_ad);
+          param_ad.repeat = Repeat;
+
           %--- 
           %-- re-estimate DSP & SVM
           
-        erptar = EP_update.nar(:,:,:,C);
-        erpnar = EP_update.nar(:,:,:,setdiff(1:param.NumStims,C));
-        X{1} = cat(3,X{1},erptar);
-        X{2} = cat(3,X{2},erpnar(:,:,:));
-        EP_new.tar = X{1};
-        EP_new.nar = X{2};
-        param_ad.trD.mode = 'training';
-        param_ad.DSP = rmfield(param_ad.DSP,'W');
-        [feat_new,label_new, param_ad] = FeatureExt_DSP(EP_new, param_ad);
-        [~,param_ad] = Classification(feat_new,label_new,param_ad);
+%         erptar = EP_update.nar(:,:,:,C);
+%         erpnar = EP_update.nar(:,:,:,setdiff(1:param.NumStims,C));
+%         X{1} = cat(3,X{1},erptar);
+%         X{2} = cat(3,X{2},erpnar(:,:,:));
+%         EP_new.tar = X{1};
+%         EP_new.nar = X{2};
+%         param_ad.trD.mode = 'training';
+%         param_ad.DSP = rmfield(param_ad.DSP,'W');
+%         [feat_new,label_new, param_ad] = FeatureExt_DSP(EP_new, param_ad);
+%         [~,param_ad] = Classification(feat_new,label_new,param_ad);
 
         %-- 
 
@@ -203,8 +208,11 @@ for s = setdiff(1:Nsub,5)
 
           UPmodel(tt).DSP = param_ad.DSP;
           UPmodel(tt).mdl = param_ad.trD;
+          
+          UPmodel(tt).prediction_new = C_new;
           param_ad.trD.mdl_adapt = param_ad.trD.mdl;
       else
+          UPmodel(tt).prediction_new = NaN;
           fprintf('>> Not updated\n')
       end
 
@@ -219,18 +227,18 @@ for s = setdiff(1:Nsub,5)
     Acc_ad = mean(targets_con(:,2:end) == pred_ad_con);
     
 
-    mkdir([fpath,'\Simulate_reestDSP_Acc'])
-    save([fpath,'\Simulate_reestDSP_Acc\',SubName],'Acc_fixed','Acc_ad');
+    mkdir([fpath,'\Simulate_',num2str(LAMBDA),'Acc'])
+    save([fpath,'\Simulate_',num2str(LAMBDA),'Acc\',SubName],'Acc_fixed','Acc_ad');
 
-    mkdir([fpath,'\Simulate_reestDSP_param'])
-    save([fpath,'\Simulate_reestDSP_param\',SubName],'UPmodel');
+    mkdir([fpath,'\Simulate_',num2str(LAMBDA),'param'])
+    save([fpath,'\Simulate_',num2str(LAMBDA),'param\',SubName],'UPmodel');
 
 end
 %%
 Acc_fix_all = []; Acc_ad_all = [];
 for s = setdiff(1:Nsub,5)
         SubName = SubNameList{s};
-    load([fpath,'\Simulate_reestDSP_Acc\',SubName])
+    load([fpath,'\Simulate_',num2str(LAMBDA),'Acc\',SubName])
     nsess = size(Acc_fixed,2);
  Acc_fix_all(s,1:nsess) = Acc_fixed;
  Acc_ad_all(s,1:nsess-1) = Acc_ad;
