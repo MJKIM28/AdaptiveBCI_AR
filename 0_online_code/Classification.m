@@ -1,5 +1,6 @@
 function [hitLabel,param]= Classification(Feature,label,param)
 global gamma
+rng(1);
 if strcmp(param.trD.mode,'training')
     try
         gamma = 1/(size(Feature,2)*var(Feature(:)));

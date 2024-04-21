@@ -1,5 +1,6 @@
 function [Feature, label, param] = FeatureExtraction(EP, param)
 global gamma
+rng(1);
 try
     switch param.FeatureType
         case 'waveform' % type 1

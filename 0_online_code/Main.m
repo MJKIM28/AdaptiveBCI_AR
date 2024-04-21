@@ -1,7 +1,7 @@
 %% Experiment: Adaptive BCI in AR env
 % 2024.03
 
-% pre 1 session -> main 4 session -> post 2 session 
+% pre 1 session -> main 4 session -> post 2 session
 
 % Minju Kim
 
@@ -19,7 +19,7 @@ Nsess = Npost + 6;
 % cd('C:\Users\minju\Desktop\mjkim\adaptive_BCI\AdaptiveBCI_AR\0_online_code')
 %% Training
 fprintf('Start Recording\n');
-pause;    
+pause;
 
 fprintf('\nRun middleware (QtHue_v1.exe)\n');
 fprintf('Hue address:192.168.1.231\n')
@@ -42,15 +42,6 @@ screens = get(0,'MonitorPositions');
 fprintf('%d screen detected\n',size(screens,1));
 ScreenSelect = input('Which screen?');
 screen_use = screens(ScreenSelect,:);
-
-h = figure(12);
-set(h,'position',screen_use ...
-    ,'WindowState','fullscreen','menubar','none','toolbar','none','color',[0 0 0])
-winsize = get(h,'Position');
-% winsize = [1 1 1920 1080];
-
-set(h,'WindowState','minimized')
-Figs.h = h;
 
 intervals = [10 5 7 15 12 14 5 10 9 11 13 5 12 10 11; ...
     9 13 5 8 7 10 12 6 10 15 9 12 6 10 12; ...
@@ -94,9 +85,37 @@ stim_img{3,2} = imread('./image/lightonoff_target.png');
 stim_img{4,2} = imread('./image/color_target.png');
 Figs.stim_img = stim_img;
 
+%-- set screen
+h = figure(12);
+set(h,'position',screen_use ...
+    ,'WindowState','fullscreen','menubar','none','toolbar','none','color',[0 0 0])
+winsize = get(h,'Position');
+% winsize = [1 1 1920 1080];
+
+set(h,'WindowState','minimized')
+Figs.h = h;
+
+h2 = figure(13);
+set(h2,'position',screen_use ...
+    ,'WindowState','fullscreen','menubar','none','toolbar','none','color',[0 0 0])
+winsize = get(h2,'Position');
+% winsize = [1 1 1920 1080];
+
+set(h2,'WindowState','minimized')
+Figs.h2 = h2;
+
+h3 = figure(14);
+set(h3,'position',screen_use ...
+    ,'WindowState','fullscreen','menubar','none','toolbar','none','color',[0 0 0])
+winsize = get(h3,'Position');
+% winsize = [1 1 1920 1080];
+
+set(h3,'WindowState','minimized')
+Figs.h3 = h3;
 
 Figs.axAll = targetmake(Figs.h,winsize);
 Figs.ax = makeinstruction(Figs.h,winsize);
+Figs.ax_h3 = makeinstruction(Figs.h3,winsize);
 
 
 %-- NASA TLX
@@ -117,7 +136,10 @@ descriptions = {['작업 수행시 정신적/인지적 활동이 요구된 정�
 
 
 
-%% Pre (Control) 
+%%-- make recorder object
+info = audiodevinfo;
+recObj = audiorecorder(44100,16,1,1);
+%% Pre (Control)
 fprintf('Ready for Pre session (without video)\n')
 fprintf('Run RDA_test_adaptive.exe and start stim without video\n')
 
@@ -126,13 +148,13 @@ pause;
 MW = tcpclient('127.0.0.1',1800);
 fopen(MW);
 
-
-instruction(Figs.h,MW,Figs.ax,'준비되면 스페이스바를 눌러주세요',3,54)
-ClickCommand(1300,950);
-pause;
+figure(Figs.h)
+instruction(Figs.h,MW,Figs.ax,'준비되면 스페이스바를 눌러주세요',54)
 
 sess = 1;
 set(Figs.h,'windowstate','minimized');
+fwrite(MW,'51'); % trigger: session start
+ClickCommand(1550,550); % move cursor
 for tr = 1:Ntr
     fprintf('\nSession%d Trial %d\n..',sess,tr)
     fprintf('Stim start in %ds\n',3)
@@ -148,40 +170,73 @@ for tr = 1:Ntr
     pause(15);
     fprintf('\nTrial %d end\n',tr)
 end
+
+fprintf('session end\n')
+pause;
+
+ClickCommand(2500,100);
+figure(Figs.h)
+instruction(Figs.h,MW,Figs.ax,'이제 느낀 대로 응답해주세요. 스페이스바를  누르면 넘어갑니다.',52)
+
+%-- NASA TLX
+fwrite(MW,'31'); % trigger: NASA TLX response
+response_rating = nasatlx_ratings(Figs.h2,loadtypes,descriptions);
+TLX(sess,:) = response_rating;
+set(Figs.h2,'WindowState','minimized')
+
 fprintf('Pre session end\n')
 clear MW
 
 try
     pause;
-load(['Dat_',SubName,'/param.mat']);
+    load(['Dat_',SubName,'/param.mat']);
 
-pred_pre =  param.prediction(end-Ntr+1:end);
-vars.Acc_pre = mean(pred_pre' == targetlist(:,1));
-fprintf('==============\nAcc_pre  %.2f \n==============\n',vars.Acc_pre);
+    pred_pre =  param.prediction(end-Ntr+1:end);
+    vars.Acc_pre = mean(pred_pre' == targetlist(:,1));
+    fprintf('==============\nAcc_pre  %.2f \n==============\n',vars.Acc_pre);
 catch
     fprintf('!! Error in accuracy computation\n')
 end
 
 %% Exp
+set(Figs.h,'windowstate','minimized');
+set(Figs.h2,'windowstate','minimized');
+set(Figs.h3,'windowstate','minimized');
+
 fprintf('Ready for Main session (with video)\n')
 fprintf('Run RDA_test_adaptive.exe and start stim with video\n')
-pause;
 
-MW = tcpclient('127.0.0.1',1800);
-fopen(MW);
+
 
 for sess = 2:Nsess-Npost
-    
-    ClickCommand(1300,950);
-    instruction(Figs.h,MW,Figs.ax,'준비되면 스페이스바를 눌러주세요',3,54)
-    pause;
+
+    fprintf(sprintf('Session%d (main %d)\n',sess,sess-1))
+    instruction_hold(Figs.h3,[],Figs.ax_h3,'잠시 대기해주세요',50)
+
+    MW = tcpclient('127.0.0.1',1800);
+    fopen(MW);
+
+    for iii = 1:3 %adjust cursor location
+        ClickCommand(2500,100);
+        MoveCommand(0,0);
+    end
+    ClickCommand(3800,500); % start stimuli
+    fwrite(MW,'21'); % trigger: start stimuli
+
+    figure(Figs.h)
+    instruction(Figs.h,MW,Figs.ax,'준비되면 스페이스바를 눌러주세요',54)
     set(Figs.h,'windowstate','minimized');
+
+    record(recObj);
+    fwrite(MW,'41'); % trigger: start record & session
+    ClickCommand(1550,550); % move cursor
 
     for tr = 1:Ntr
         fprintf('\nSession%d Trial %d\n..',sess,tr)
         fprintf('Stim start in %ds\n',intervals(sess-1,tr))
         pause(intervals(sess-1,tr))
         target = targetlist(tr,sess);
+        figure(Figs.h)
         targetpresent(Figs.h,MW,Figs.axAll,Figs.stim_img,target); % 3 sec
 
         %-- start BCI
@@ -193,42 +248,73 @@ for sess = 2:Nsess-Npost
         fprintf('\nTrial %d end\n',tr)
     end
 
-    %-- NASA TLX 
-    response_rating = nasatlx_ratings(h,loadtypes,descriptions);
+    fwrite(MW,'42'); % trigger: stop record & session
+    stop(recObj);
+    answer = getaudiodata(recObj);
+    ansfile = [SubName,'_Sess',num2str(sess),'.wav'];
+    audiowrite(ansfile, answer, recObj.SampleRate)
 
+    fprintf('session end\n')
+    pause;
+
+    ClickCommand(2500,100);
+    figure(Figs.h)
+    instruction(Figs.h,MW,Figs.ax,'이제 느낀 대로 응답해주세요. 스페이스바를  누르면 넘어갑니다.',52)
+
+    %-- NASA TLX
+    fwrite(MW,'31'); % trigger: NASA TLX response
+    response_rating = nasatlx_ratings(Figs.h2,loadtypes,descriptions);
+    TLX(sess,:) = response_rating;
+    set(Figs.h2,'WindowState','minimized')
+
+    clear MW
 end
-clear MW
+
+
 
 try
     pause;
-load(['Dat_',SubName,'/param.mat']);
+    load(['Dat_',SubName,'/param.mat']);
 
-pred_main = param.prediction(end-(Nsess-2)*Ntr+1:end);
-target_main =  targetlist(:,2:6);
-vars.Acc_mainAll = mean(pred_main'==target_main(:));
+    pred_main = param.prediction(end-(Nsess-2)*Ntr+1:end);
+    target_main =  targetlist(:,2:6);
+    vars.Acc_mainAll = mean(pred_main'==target_main(:));
 
-for s= 1:Nsess-1-Npost
-    vars.Acc_main_sess(s) = mean(pred_main(Ntr*(s-1)+1:s*Ntr)' == targetlist(:,1+s));
-end
-fprintf('==============\nAcc_main1  %.2f \nAcc_main2  %.2f\nAcc_main3  %.2f\nAcc_main4  %.2f\nAcc_main(all) %.2f\n====================\n',...
-    vars.Acc_main_sess(1),vars.Acc_main_sess(2),vars.Acc_main_sess(3),vars.Acc_main_sess(4),vars.Acc_mainAll);
+    for s= 1:Nsess-1-Npost
+        vars.Acc_main_sess(s) = mean(pred_main(Ntr*(s-1)+1:s*Ntr)' == targetlist(:,1+s));
+    end
+    fprintf('==============\nAcc_main1  %.2f \nAcc_main2  %.2f\nAcc_main3  %.2f\nAcc_main4  %.2f\nAcc_main(all) %.2f\n====================\n',...
+        vars.Acc_main_sess(1),vars.Acc_main_sess(2),vars.Acc_main_sess(3),vars.Acc_main_sess(4),vars.Acc_mainAll);
 catch
     fprintf('!! Error in accuracy computation\n')
 end
 
 %% post (control)
+set(Figs.h,'windowstate','minimized');
+set(Figs.h2,'windowstate','minimized');
+set(Figs.h3,'windowstate','minimized');
 fprintf('Ready for Post session (without video)\n')
 fprintf('Run RDA_test_adaptive.exe and start stim without video\n')
-pause;
+
+instruction_hold(Figs.h3,[],Figs.ax_h3,'잠시 대기해주세요',50)
 
 MW = tcpclient('127.0.0.1',1800);
 fopen(MW);
+
+for iii = 1:3 %adjust cursor location
+    ClickCommand(2500,100);
+    MoveCommand(0,0);
+end
+ClickCommand(3800,500); % start stimuli
+fwrite(MW,'21'); % trigger: start stimuli
+
 for sess = Nsess-Npost+1:Nsess
-    
-    ClickCommand(1300,950);
-    instruction(Figs.h,MW,Figs.ax,'준비되면 스페이스바를 눌러주세요',3,54)
-    pause;
+    figure(Figs.h)
+    instruction(Figs.h,MW,Figs.ax,'준비되면 스페이스바를 눌러주세요',54)
     set(Figs.h,'windowstate','minimized');
+    fwrite(MW,'51'); % trigger: session start
+
+    ClickCommand(1550,550); % move cursor
     for tr = 1:Ntr
         fprintf('\nSession%d Trial %d\n..',sess,tr)
         fprintf('Stim start in %ds\n',5)
@@ -244,28 +330,63 @@ for sess = Nsess-Npost+1:Nsess
         pause(18);
         fprintf('\nTrial %d end\n',tr)
     end
+
+    fprintf('session end\n')
+    pause;
+
+    ClickCommand(2500,100);
+    figure(Figs.h)
+    instruction(Figs.h,MW,Figs.ax,'이제 느낀 대로 응답해주세요. 스페이스바를  누르면 넘어갑니다.',52)
+
+    %-- NASA TLX
+    fwrite(MW,'31'); % trigger: NASA TLX response
+    response_rating = nasatlx_ratings(Figs.h2,loadtypes,descriptions);
+    TLX(sess,:) = response_rating;
+    set(Figs.h2,'WindowState','minimized')
 end
 fprintf('Post session end\n')
 
 try
-load(['Dat_',SubName,'/param.mat']);
+    load(['Dat_',SubName,'/param.mat']);
 
-pred_post = param.prediction(end-(Nsess-6)*Ntr+1:end);
-target_post = targetlist(:,7:end);
-vars.Acc_post = mean(pred_post'==target_post(:));
-fprintf('==============\nAcc_post %.2f\n',...
-    vars.Acc_post);
+    pred_post = param.prediction(end-(Nsess-6)*Ntr+1:end);
+    target_post = targetlist(:,7:end);
+    vars.Acc_post = mean(pred_post'==target_post(:));
+    fprintf('==============\nAcc_post %.2f\n',...
+        vars.Acc_post);
 
 catch
     fprintf('!! Error in accuracy computation\n')
 end
-%%
-instruction(Figs.h,MW,Figs.ax,'실험이 모두 종료되었습니다',10,54)
+%% TLX
+global response_source
+
+source_weight_comb = nasatlx_sourceofwl(Figs.h2,loadtypes,descriptions);
+set(Figs.h2,'WindowState','minimized')
+%-- calculate ratings
+Nload = length(loadtypes);
+sourceweight = zeros(Nload,1);
+for n = 1:length(loadtypes)
+    sourceweight(n) = sum(ismember(response_source,loadtypes{n}));
+end
+TLX(:,4) = 100 - TLX(:,4); % reverse PERFORMANCE rating
+tlxresult.loadtype = loadtypes;
+tlxresult.rating = TLX;
+tlxresult.source = response_source;
+tlxresult.source_weight_pair = source_weight_comb;
+tlxresult.source_weight = sourceweight;
+tlxresult.adjusted_rating = TLX.*sourceweight';
+tlxresult.weighted_rating = sum(tlxresult.adjusted_rating,2)/15;
+
+%% Finish
+instruction_hold(Figs.h3,[],Figs.ax_h3,'실험이 모두 종료되었습니다',50)
 
 
 vars.target = targetlist;
 vars.intervals = intervals;
 vars.subname = SubName;
+vars.TLX = tlxresult;
+save(SubName,'vars')
 
 %-- Accuracy
 load(['Dat_',SubName,'/param.mat']);
@@ -285,8 +406,8 @@ vars.Acc_post = mean(pred_post'==target_post(:));
 for s= 1:Nsess-1-Npost
     vars.Acc_main_sess(s) = mean(pred_main(Ntr*(s-1)+1:s*Ntr)' == targetlist(:,1+s));
 end
-fprintf('==============\nAcc_pre  %.2f \n \nAcc_main1  %.2f \nAcc_main2  %.2f\nAcc_main3  %.2f\nAcc_main4  %.2f\nAcc_main(all) %.2f\n\nAcc_post %.2f\n',...
-    vars.Acc_pre,vars.Acc_main_sess(1),vars.Acc_main_sess(2),vars.Acc_main_sess(3),vars.Acc_main_sess(4),vars.Acc_mainAll,vars.Acc_post);
+fprintf('==============\nAcc_pre  %.2f \n \nAcc_main1  %.2f \nAcc_main2  %.2f\nAcc_main3  %.2f\nAcc_main4  %.2f\nAcc_main5  %.2f\nAcc_main(all) %.2f\n\nAcc_post %.2f\n',...
+    vars.Acc_pre,vars.Acc_main_sess(1),vars.Acc_main_sess(2),vars.Acc_main_sess(3),vars.Acc_main_sess(4),vars.Acc_main_sess(5),vars.Acc_mainAll,vars.Acc_post);
 
 %-- save variables
 save(SubName,'vars')

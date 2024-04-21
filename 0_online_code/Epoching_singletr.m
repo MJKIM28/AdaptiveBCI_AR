@@ -25,14 +25,7 @@ end
 
 Nb = length(ind_start);
 EP.target = type(ind_start - 1); 
-%%%%%%%%%%% for multitasking exp %%%%%%%%%%%%%%%%%
-if strcmp(param.trD.mode,'training') 
-    
-   target_speak = type(find(type == 31) +1); % 31: start question trigger 
-   EP.target(16:end) = [];
-   EP.target = [EP.target target_speak];
-end
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 EP.dat = NaN(param.Totalepoc,param.NumCh,param.NumStims*param.repeat,Nb);
 EP.lat = NaN(param.Totalepoc,param.NumStims*param.repeat,Nb);
 for b = 1:Nb

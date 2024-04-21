@@ -51,26 +51,26 @@ param.Sys                       = [12 13];
 param.Targets                   = [];
 
 %% figure
-param.H                         = figure(1); clf;
-set(param.H, 'color', 'w');
-
-for i = 1:length(param.ChInitial)
-    param.SH(i)                       = axes;
-    hold(param.SH(i),'on');
-    
-    subplot(6,6,i,param.SH(i));
-    
-    param.h(i,1)                        = plot(nan,nan, 'parent',param.SH(i));
-    param.h(i,2)                        = plot(nan,nan, 'parent',param.SH(i));
-    param.h(i,3)                        = plot(nan,nan, 'parent',param.SH(i));
-    param.h(i,4)                        = plot(nan,nan, 'parent',param.SH(i));
-    param.h(i,5)                        = plot(nan,nan, 'parent',param.SH(i));
-    param.h(i,6)                        = plot(nan,nan, 'parent',param.SH(i));
-    
-end
-
-set(gcf, 'Position', [200, 50, 1800, 1000])
-set(gcf,'PaperUnits','inches','PaperPosition',[0 0 16 10])
+% param.H                         = figure(1); clf;
+% set(param.H, 'color', 'w');
+% 
+% for i = 1:length(param.ChInitial)
+%     param.SH(i)                       = axes;
+%     hold(param.SH(i),'on');
+% 
+%     subplot(6,6,i,param.SH(i));
+% 
+%     param.h(i,1)                        = plot(nan,nan, 'parent',param.SH(i));
+%     param.h(i,2)                        = plot(nan,nan, 'parent',param.SH(i));
+%     param.h(i,3)                        = plot(nan,nan, 'parent',param.SH(i));
+%     param.h(i,4)                        = plot(nan,nan, 'parent',param.SH(i));
+%     param.h(i,5)                        = plot(nan,nan, 'parent',param.SH(i));
+%     param.h(i,6)                        = plot(nan,nan, 'parent',param.SH(i));
+% 
+% end
+% 
+% set(gcf, 'Position', [200, 50, 1800, 1000])
+% set(gcf,'PaperUnits','inches','PaperPosition',[0 0 16 10])
 
 %% filter coeff
 param.Fs                        = 500;

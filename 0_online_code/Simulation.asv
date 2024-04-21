@@ -1,0 +1,48 @@
+subname = 'Subtest10';
+Folder = ['Dat_',num2str(subname)];
+load([Folder,'/param.mat'])
+
+%%
+param.DSP = rmfield(param.DSP,'W');
+param.trD = rmfield(param.trD,'mdl');
+param.trD.mode = 'training';
+
+sig = []; trig = [];
+for n = 1:15 % data reload
+    load([Folder,'/',param.SubName,'_Training',num2str(n)]);
+    sig = cat(2,sig,sig_vec);
+    trig = cat(2,trig,trigger_re);
+end
+clear sig_vec trigger
+[C, param] = P300_processing_adaptive_simul(sig(1:param.NumChIni,:),trig, param); % process data
+
+
+%%
+load([subname])
+prediction = [];
+tt = 1;
+param.trD.ADmode = 'adaptive';
+%%
+for n = 16:90
+     load([Folder,'/',param.SubName,'_Testing',num2str(n)]);
+   [C, param] = P300_processing_adaptive_simul(sig_vec(1:param.NumChIni,:),trigger_re,param); % process data
+
+   prediction(tt) = C;
+    tt = tt+1;
+end
+
+prediction_ = reshape(prediction,15,[]);
+mean(vars.target(:,2:6) == prediction_)
+
+%%
+prediction2 = [];
+for n = 91:105
+     load([Folder,'/',param.SubName,'_Testing',num2str(n)]);
+   [C, param] = P300_processing_adaptive_simul(sig_vec(1:param.NumChIni,:),trigger_re,param); % process data
+
+   prediction2(tt) = C;
+    tt = tt+1;
+end
+
+prediction_2 = reshape(prediction2,15,[]);
+mean(vars.target(:,end) == prediction_2)

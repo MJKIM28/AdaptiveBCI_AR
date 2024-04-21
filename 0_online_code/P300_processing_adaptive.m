@@ -24,6 +24,7 @@ global DS
             param.trD.mdl_adapt = param.trD.mdl;
             param.trD.feature = Feature;
             param.trD.label = label;
+            param.update(1).DSP_init = param.DSP;
 
             param.DSP.init = param.DSP;
         case 'testing'
@@ -44,17 +45,18 @@ global DS
             
                 %-- check update
                 [upcheck,up,Posterior,trs,D] = checkupdate(score, [] ,param.trD.threshold,output,[]);
-                if upcheck
-                    param.update{param.Numtrial}.updated = up;
-                else
-                    param.update{param.Numtrial}.updated = 0;
-                end
-                param.update{param.Numtrial}.Posterior = Posterior;
-                param.update{param.Numtrial}.Dist = D;
+               
+                param.update(param.Numtrial).classprob = score;
+                param.update(param.Numtrial).upcheck = upcheck;
+                param.update(param.Numtrial).upids = up;
+                param.update(param.Numtrial).trial_candidate = trs;
+                param.update(param.Numtrial).Posterior = Posterior;
+                param.update(param.Numtrial).Dist = D;
+                param.update(param.Numtrial).prediction = C;
 
                 %-- update
                 %-- DSP
-                if upcheck
+                if upcheck && ~isempty(up)
                     EP_1block = Epoch_condition(EP,param);
 
                     %-- update DSP
@@ -87,11 +89,13 @@ global DS
                     fprintf('>> Updated\n')
 
 
-                    param.update{param.Numtrial}.DSP = param.DSP;
-                    param.update{param.Numtrial}.mdl = param.trD;
+                    param.update(param.Numtrial).DSP = param.DSP;
+                    param.update(param.Numtrial).mdl = param.trD;
+                    param.update(param.Numtrial).prediction_new = C_new;
                     param.trD.mdl_adapt = param.trD.mdl;
                 else
                     fprintf('>> Not updated\n')
+                    param.update(param.Numtrial).prediction_new = NaN;
                 end
             
             end
