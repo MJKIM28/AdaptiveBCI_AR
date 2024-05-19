@@ -1,5 +1,5 @@
 
-function topo_P300_eachcond_v2(ch_locs,data,colors,conditions)
+function topo_P300_eachcond_v2(ch_locs,data,colors,conditions,ylimit)
 % data shape = (channel, time points, Ncondition)
 
 Ncon = size(data,3);
@@ -11,7 +11,6 @@ ChP300 = { 'C3' 'Cz'    'C4'       'CP1'    'CP2'   ...
     'P3'    'Pz'    'P4'     'O1'    'Oz'    'O2'};
 channel = ch_locs;
 x = [-99:300] / 500;
-ylimit = [-2 2];
 
 fig=figure();
 for ich = 1: size(Ch,2)

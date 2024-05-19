@@ -37,7 +37,7 @@ for ii = 1:Nstim
     Dist(ii) = mahal(mean(score(:,ii)),reshape(score(:,setdiff(1:Nstim,ii)),Ntrial*(Nstim-1),1));
 end
 [maxval,maxid] = max(Dist);
-if maxval> threshold && maxid == output
+if maxid == output %&& maxval> threshold 
     up_check = true;
 else
     up_check = false;
@@ -59,15 +59,15 @@ end
 
 %% ratio
 
-% elseif strcmp(type,'ratio')
-
-[Sorted,idx] = sort(score,2,"descend");
-
-trs = find(idx(:,1) == output); % max score == prediction
-Posterior = 1 - Sorted(:,2)./Sorted(:,1);
-
-ids = Posterior(trs) > threshold;
-upids = trs(ids);
-% end
-
+% % elseif strcmp(type,'ratio')
+% 
+% [Sorted,idx] = sort(score,2,"descend");
+% 
+% trs = find(idx(:,1) == output); % max score == prediction
+% Posterior = 1 - Sorted(:,2)./Sorted(:,1);
+% 
+% ids = Posterior(trs) > threshold;
+% upids = trs(ids);
+% % end
+upids = 0; Posterior = 0; trs = 0;
 end

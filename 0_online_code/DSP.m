@@ -1,4 +1,4 @@
-function [W, w0,Sw_reg,Sb, mu,N] = DSP(X,theta)
+function [W, w0,Sw_reg,Sb, mu,N,Swinv] = DSP(X,theta)
 % X{i}: class i, time x channel x trial
 % theta: the regularization level of Sw
 % Assume that the time length and the number of channel is same for every classes
@@ -18,7 +18,7 @@ for i = 1:Nclass
         S_i = Wd'*Wd;
         S(:,:,i) = S(:,:,i) + S_i;
     end
-    S(:,:,i) = S(:,:,i)/N(i);
+    S(:,:,i) = S(:,:,i);%/N(i);
 end
 
 Sw = sum(S,3);
@@ -31,8 +31,8 @@ for i = 1:Nclass
     Bd = mu(:,:,i) - mu_all;
     Sb = Sb + N(i)*(Bd'*Bd);
 end
-
-[W, U] = eig(inv(Sw_reg)*Sb);
+Swinv = inv(Sw_reg);
+[W, U] = eig(Swinv*Sb);
 
 w0 = -W'*mu_all';
 

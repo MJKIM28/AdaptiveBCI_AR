@@ -14,14 +14,17 @@ if strcmp(param.trD.mode,'training')
     
     %-- updated: to get Sw,Sb,mu (@20221025)
     if ~isfield(param.DSP,'W') 
-        [W,w0,Sw,Sb,mu,N] = DSP(X,param.DSP.theta);
+        [W,w0,Sw,Sb,mu,N,Swinv] = DSP(X,param.DSP.theta);
         param.DSP.W = W;
         param.DSP.w0 = w0;
         param.DSP.Sw = Sw;
         param.DSP.Sb = Sb;
         param.DSP.mu = mu;
         param.DSP.N = N;
-        fprintf('DSP weight estimated\n')
+        param.DSP.Swinv = Swinv;
+        
+    else
+        fprintf('use previous DSP weight\n')
     end
     
     Yt = [];

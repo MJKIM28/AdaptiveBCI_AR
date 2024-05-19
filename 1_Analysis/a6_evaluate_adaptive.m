@@ -7,12 +7,13 @@ fpath = 'E:\1_연구\분석코드\2024_adaptive_BCI\Data\Pilot';
 codepath = 'E:\1_연구\분석코드\2024_adaptive_BCI\AdaptiveBCI_AR\0_online_code';
 
 
-SubNameList = {'Subtest02','Subtest03','Subtest04','Subtest05','Subtest06','Subtest07'};
+SubNameList = {'Subtest12','Subtest13','Subtest14','Subtest15','Subtest17',...
+    'Subtest18','Subtest19','Subtest20','Subtest21','Subtest22'};%{'Subtest02','Subtest03','Subtest04','Subtest05','Subtest06','Subtest07'};
 
 Nsub = length(SubNameList);
 
-Ntr_tr = 8;
-Ntr_con = 15;
+Ntr_tr = 15;
+Ntr_con = 14;
 Nsess = 6;
 Ntr_te = Ntr_con*Nsess;
 
